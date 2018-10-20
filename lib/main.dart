@@ -1,19 +1,23 @@
 import 'dart:ui' as ui;
 
 import 'package:flame/flame.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:trex/game/Game.dart';
+import 'package:trex/game/game.dart';
 
 void main() async {
   Flame.audio.disableLog();
   List<ui.Image> image = await Flame.images.loadAll(["sprite.png"]);
-
+  TRexGame tRexGame = TRexGame(spriteImage: image[0]);
   runApp(MaterialApp(
     title: 'TRexGame',
     home: Scaffold(
-      body: GameWrapper(TRexGame(spriteImage: image[0])),
+      body: GameWrapper(tRexGame),
     ),
   ));
+
+  Flame.util.addGestureRecognizer(new TapGestureRecognizer()
+    ..onTapDown = (TapDownDetails evt) => tRexGame.onTap());
 }
 
 
