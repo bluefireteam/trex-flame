@@ -8,21 +8,18 @@ import 'package:trex/game/custom/util.dart';
 import 'package:trex/game/horizon/config.dart';
 
 
-class CloudManager extends PositionComponent with ComposedComponent{
+class CloudManager extends PositionComponent with Resizable, ComposedComponent {
   Image spriteImage;
   CloudManager(this.spriteImage) : super();
 
-  @override
-  void updateWithSpeed(t, double speed) {
+  void updateWithSpeed(double t, double speed) {
     final double cloudSpeed = HorizonConfig.bgCloudSpeed / 1000 * t * speed;
     final int numClouds = this.components.length;
-
-    print(components.length > 0 ? (components.elementAt(0) as Cloud).y : "none");
 
     if(numClouds > 0) {
       this.updateComponents((c) {
         Cloud cloud = c as Cloud;
-        cloud.updateWithSpeed(cloudSpeed);
+        cloud.updateWithSpeed(t, cloudSpeed);
       });
       Cloud lastCloud = components.last;
       if(numClouds < HorizonConfig.maxClouds &&
@@ -34,7 +31,6 @@ class CloudManager extends PositionComponent with ComposedComponent{
     } else {
       addCloud();
     }
-
   }
 
   addCloud(){
@@ -50,7 +46,6 @@ class Cloud extends SpriteComponent with Resizable {
   final double cloudGap;
   bool toRemove = false;
 
-
   Cloud(Image spriteImage) :
         cloudGap = getRandomNum(CloudConfig.minCloudGap, CloudConfig.maxCloudGap),
         super.fromSprite(
@@ -64,13 +59,13 @@ class Cloud extends SpriteComponent with Resizable {
           )
         );
 
+  @override
   void update(double t){
 
   }
-
-  void updateWithSpeed(double speed) {
+  void updateWithSpeed(double t, double speed) {
     if(toRemove) return;
-    x -= speed.ceil();
+    x -= (speed.ceil() * 50 * t);
 
     if(!isVisible){
       this.toRemove = true;

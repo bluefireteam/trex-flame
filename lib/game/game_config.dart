@@ -14,7 +14,7 @@ class GameConfig {
   static double maxBlinkCount = 3.0;
   static double maxClouds = 6.0;
   static double maxObstacleLength = 3.0;
-  static double maxObstacleDuplication = 2.0;
+  static int maxObstacleDuplication = 2;
   static double maxSpeed = 13.0;
   static double minJumpHeight = 35.0;
   static double speed = 6.0;
