@@ -22,8 +22,8 @@ class TRexGame extends BaseGame{
     tRex = new TRex(spriteImage);
     horizon = new Horizon(spriteImage);
 
-    this..add(tRex)
-        ..add(horizon);
+    this..add(horizon)..add(tRex);
+
   }
   void onTap() {
     tRex.startJump(this.currentSpeed);
