@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flame/game.dart';
 import 'package:trex/game/Horizon/horizon.dart';
+import 'package:trex/game/collision/collision_utils.dart';
 import 'package:trex/game/game_config.dart';
 import 'package:trex/game/t_rex/config.dart';
 import 'package:trex/game/t_rex/t_rex.dart';
@@ -44,9 +45,19 @@ class TRexGame extends BaseGame{
       horizon.updateWithSpeed(t, this.currentSpeed);
     }
 
-    if (this.currentSpeed < GameConfig.maxSpeed) {
-      this.currentSpeed += GameConfig.acceleration;
+
+
+    var obstacles = horizon.horizonLine.obstacleManager.components;
+    bool collision = obstacles.length > 0 && checkForCollision(obstacles.first, tRex);
+    if(!collision){
+      if (this.currentSpeed < GameConfig.maxSpeed) {
+        this.currentSpeed += GameConfig.acceleration;
+      }
+    } else {
+      gameOver();
     }
+
+
 
   }
 
@@ -59,6 +70,11 @@ class TRexGame extends BaseGame{
 
 
   bool get playing => status ==  TRexGameStatus.playing;
+  int count = 0;
+  void gameOver() {
+    count++;
+    print("collision! $count");
+  }
 }
 
 

@@ -5,6 +5,7 @@ import 'package:flame/components/animation_component.dart';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/resizable.dart';
 import 'package:flame/sprite.dart';
+import 'package:trex/game/collision/collision_box.dart';
 import 'package:trex/game/t_rex/config.dart';
 
 enum TRexStatus { crashed, ducking, jumping, running, waiting, intro }
@@ -98,6 +99,8 @@ class TRex extends PositionComponent with Resizable {
     return (size.height / 2) - TRexConfig.height / 2;
   }
   bool get playingIntro => status == TRexStatus.intro;
+
+  bool get ducking => status == TRexStatus.ducking;
 }
 
 

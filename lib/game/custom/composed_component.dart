@@ -39,8 +39,8 @@ abstract class ComposedComponent extends Component {
     }
   }
 
-  void updateComponents ( IterateOverComponents iterateOverComponents ){
-    components.forEach(iterateOverComponents);
+  void updateComponents (Function itractionCB){
+    components.forEach(itractionCB);
   }
 
   @override

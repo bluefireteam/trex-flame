@@ -12,7 +12,6 @@ class HorizonDimensions {
 
 class CloudConfig {
 
-
   static double height = 28.0;
 
   static double maxCloudGap = 400.0;

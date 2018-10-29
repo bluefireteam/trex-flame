@@ -67,6 +67,7 @@ class HorizonLine extends PositionComponent with Resizable, ComposedComponent {
   void updateWithSpeed(double t, double speed) {
     double increment = (speed * 50 * t);
     updateXPos(firstGround.x <= 0, increment);
+
     cloudManager.updateWithSpeed(t, speed);
 
     obstacleManager.updateWithSpeed(t, speed);

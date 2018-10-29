@@ -5,13 +5,13 @@ import 'dart:ui';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/resizable.dart';
 import 'package:flame/sprite.dart';
+import 'package:trex/game/collision/collision_box.dart';
 import 'package:trex/game/custom/composed_component.dart';
 import 'package:trex/game/custom/util.dart';
 import 'package:trex/game/game_config.dart';
 import 'package:trex/game/horizon/config.dart';
 import 'package:trex/game/obstacle/config.dart';
 import 'package:trex/game/obstacle/obstacle_type.dart';
-
 
 class ObstacleManager extends PositionComponent with Resizable, ComposedComponent {
   ListQueue<ObstacleType> history = new ListQueue();
@@ -74,10 +74,13 @@ class ObstacleManager extends PositionComponent with Resizable, ComposedComponen
 
     return duplicateCount >= GameConfig.maxObstacleDuplication;
   }
+
+
 }
 
 
 class Obstacle extends SpriteComponent{
+  List<CollisionBox> collisionBoxes = new List();
   ObstacleType type;
 
   bool toRemove = false;
@@ -88,6 +91,7 @@ class Obstacle extends SpriteComponent{
 
   Obstacle(this.type, Sprite sprite, double speed, double gapCoefficient, [double opt_xOffset])
     : super.fromSprite(type.width, type.height, sprite) {
+    cloneCollisionBoxes();
 
     size = getRandomNum(1.0, ObstacleConfig.maxObstacleLength/1).floor();
     x = HorizonDimensions.width + (opt_xOffset ?? 0.0);
@@ -97,8 +101,8 @@ class Obstacle extends SpriteComponent{
     }
 
     width = this.type.width * size;
-    Rect actualsrc = this.sprite.src;
-    this.sprite.src = Rect.fromLTWH(actualsrc.left, actualsrc.top, width, actualsrc.height);
+    Rect actualSrc = this.sprite.src;
+    this.sprite.src = Rect.fromLTWH(actualSrc.left, actualSrc.top, width, actualSrc.height);
     y = type.y;
 
     gap = this.getGap(gapCoefficient, speed);
@@ -129,10 +133,23 @@ class Obstacle extends SpriteComponent{
     return toRemove;
   }
 
-  bool get isVisible {
-    return x + this.width > 0;
-  }
+  bool get isVisible =>  x + this.width > 0;
 
+
+  void cloneCollisionBoxes() {
+    List<CollisionBox> typeCollisionBoxes = type.collisionBoxes;
+
+    typeCollisionBoxes.forEach((CollisionBox box) {
+      this.collisionBoxes.add(CollisionBox(
+        x: box.x,
+        y: box.y,
+        width: box.width,
+        height: box.height,
+      ));
+    });
+
+
+  }
 
 }
 

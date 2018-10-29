@@ -39,6 +39,13 @@ class CloudManager extends PositionComponent with Resizable, ComposedComponent {
     cloud.y = (y/2 - (CloudConfig.maxSkyLevel - CloudConfig.minSkyLevel)) + getRandomNum(CloudConfig.minSkyLevel, CloudConfig.maxSkyLevel);
     components.add(cloud);
   }
+
+  void resize(Size size){
+    updateComponents((cloud) {
+      (cloud as Cloud).y = (y/2 - (CloudConfig.maxSkyLevel - CloudConfig.minSkyLevel)) + getRandomNum(CloudConfig.minSkyLevel, CloudConfig.maxSkyLevel);
+    });
+    super.resize(size);
+  }
 }
 
 

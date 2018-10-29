@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flame/sprite.dart';
+import 'package:trex/game/collision/collision_box.dart';
 
 class ObstacleType {
 
@@ -15,6 +16,8 @@ class ObstacleType {
   final double frameRate;
   final double speedOffset;
 
+  final List<CollisionBox> collisionBoxes;
+
   const ObstacleType._internal(this.type,{
     this.width,
     this.height,
@@ -25,6 +28,7 @@ class ObstacleType {
     this.numFrames,
     this.frameRate,
     this.speedOffset,
+    this.collisionBoxes,
   });
 
   static const cactusSmall = ObstacleType._internal("cactusSmall",
@@ -34,6 +38,26 @@ class ObstacleType {
     multipleSpeed: 4,
     minGap: 120.0,
     minSpeed: 0.0,
+    collisionBoxes: <CollisionBox> [
+      CollisionBox(
+        x: 5.0,
+        y:7.0,
+        width: 10.0,
+        height: 54.0,
+      ),
+      CollisionBox(
+        x: 9.0,
+        y: 0.0,
+        width: 12.0,
+        height: 68.0,
+      ),
+      CollisionBox(
+        x: 15.0,
+        y: 4.0,
+        width: 14.0,
+        height: 28.0,
+      )
+    ]
   );
 
   static const cactusLarge = ObstacleType._internal("cactusLarge",
@@ -43,6 +67,12 @@ class ObstacleType {
     multipleSpeed: 7,
     minGap: 120.0,
     minSpeed: 0.0,
+
+    collisionBoxes: <CollisionBox> [
+      CollisionBox(x: 0.0, y: 12.0, width: 14.0, height: 76.0),
+      CollisionBox(x: 8.0, y: 0.0, width: 14.0, height: 98.0),
+      CollisionBox(x: 13.0, y: 10.0, width: 20.0, height: 76.0)
+    ]
   );
 
   static Sprite spriteForType(ObstacleType type, Image spriteImage){
