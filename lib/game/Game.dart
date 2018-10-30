@@ -33,7 +33,7 @@ class TRexGame extends BaseGame{
 
   void onTap() {
     if(gameOver){
-      reset();
+      restart();
       return;
     }
     tRex.startJump(this.currentSpeed);
@@ -41,6 +41,7 @@ class TRexGame extends BaseGame{
 
   @override
   void update(double t) {
+
     tRex.update(t);
     horizon.updateWithSpeed(0.0, this.currentSpeed);
 
@@ -86,7 +87,12 @@ class TRexGame extends BaseGame{
     this.status = TRexGameStatus.gameOver;
   }
 
-  void reset() {
+  void restart() {
+    status = TRexGameStatus.playing;
+    tRex.reset();
+    horizon.reset();
+    currentSpeed = GameConfig.speed;
+    gameOverPanel.visible = false;
 
   }
 }

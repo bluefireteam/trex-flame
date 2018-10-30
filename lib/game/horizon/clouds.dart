@@ -46,6 +46,10 @@ class CloudManager extends PositionComponent with Resizable, ComposedComponent {
     });
     super.resize(size);
   }
+
+  void reset() {
+    components.clear();
+  }
 }
 
 

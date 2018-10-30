@@ -34,6 +34,9 @@ class Horizon extends PositionComponent with  Resizable, ComposedComponent {
     super.update(t);
   }
 
+  void reset() {
+    horizonLine.reset();
+  }
 
 }
 

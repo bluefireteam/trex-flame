@@ -69,7 +69,6 @@ class HorizonLine extends PositionComponent with Resizable, ComposedComponent {
     updateXPos(firstGround.x <= 0, increment);
 
     cloudManager.updateWithSpeed(t, speed);
-
     obstacleManager.updateWithSpeed(t, speed);
 
     super.update(t);
@@ -80,6 +79,14 @@ class HorizonLine extends PositionComponent with Resizable, ComposedComponent {
       PositionComponent positionComponent = c as PositionComponent;
       positionComponent.y = y;
     });
+  }
+
+  void reset() {
+    cloudManager.reset();
+    obstacleManager.reset();
+
+    this.firstGround.x = 0.0;
+    this.secondGround.y = HorizonDimensions.width;
   }
 }
 

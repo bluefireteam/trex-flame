@@ -75,6 +75,11 @@ class ObstacleManager extends PositionComponent with Resizable, ComposedComponen
     return duplicateCount >= GameConfig.maxObstacleDuplication;
   }
 
+  void reset() {
+    components.clear();
+    history.clear();
+  }
+
 
 }
 

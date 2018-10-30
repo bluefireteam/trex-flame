@@ -67,6 +67,7 @@ class TRex extends PositionComponent with Resizable {
     y = groundYPos;
     jumpVelocity = 0.0;
     jumpCount = 0;
+    status = TRexStatus.running;
   }
 
   void update(double t) {
@@ -76,7 +77,6 @@ class TRex extends PositionComponent with Resizable {
       if (this.y > this.groundYPos) {
         this.reset();
         this.jumpCount++;
-        this.status = TRexStatus.running;
       }
     } else {
       y = this.groundYPos;
