@@ -18,6 +18,7 @@ class TRex extends PositionComponent with Resizable {
   WaitingTRex idleDino;
   RunningTRex runningDino;
   JumpingTRex jumpingTRex;
+  SurprisedTRex surprisedTRex;
 
   double jumpVelocity = 0.0;
   bool reachedMinHeight = false;
@@ -28,6 +29,7 @@ class TRex extends PositionComponent with Resizable {
         runningDino = RunningTRex(spriteImage),
         idleDino = WaitingTRex(spriteImage),
         jumpingTRex = JumpingTRex(spriteImage),
+        surprisedTRex = SurprisedTRex(spriteImage),
         super();
 
 
@@ -37,6 +39,9 @@ class TRex extends PositionComponent with Resizable {
         return idleDino;
       case TRexStatus.jumping:
         return jumpingTRex;
+
+      case TRexStatus.crashed:
+        return surprisedTRex;
       case TRexStatus.intro:
       case TRexStatus.running:
       default:
@@ -123,7 +128,7 @@ class RunningTRex extends AnimationComponent {
 }
 
 class WaitingTRex extends SpriteComponent  {
-  WaitingTRex(Image spriteImage): super.fromSprite(TRexConfig.width, TRexConfig.height, Sprite.fromImage(spriteImage,
+  WaitingTRex(Image spriteImage) : super.fromSprite(TRexConfig.width, TRexConfig.height, Sprite.fromImage(spriteImage,
       width: TRexConfig.width,
       height: TRexConfig.height,
       x: 76.0,
@@ -132,10 +137,20 @@ class WaitingTRex extends SpriteComponent  {
 }
 
 class JumpingTRex extends SpriteComponent {
-  JumpingTRex(Image spriteImage):super.fromSprite(TRexConfig.width, TRexConfig.height, Sprite.fromImage(spriteImage,
+  JumpingTRex(Image spriteImage) : super.fromSprite(TRexConfig.width, TRexConfig.height, Sprite.fromImage(spriteImage,
       width: TRexConfig.width,
       height: TRexConfig.height,
       x: 1339.0,
       y: 6.0
+  ));
+}
+
+
+class SurprisedTRex extends SpriteComponent {
+  SurprisedTRex(Image spriteImage) : super.fromSprite(TRexConfig.width, TRexConfig.height, Sprite.fromImage(spriteImage,
+    width: TRexConfig.width,
+    height: TRexConfig.height,
+    x: 1782.0,
+    y: 6.0
   ));
 }

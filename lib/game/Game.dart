@@ -4,6 +4,7 @@ import 'package:flame/game.dart';
 import 'package:trex/game/Horizon/horizon.dart';
 import 'package:trex/game/collision/collision_utils.dart';
 import 'package:trex/game/game_config.dart';
+import 'package:trex/game/game_over/game_over.dart';
 import 'package:trex/game/t_rex/config.dart';
 import 'package:trex/game/t_rex/t_rex.dart';
 
@@ -13,6 +14,7 @@ class TRexGame extends BaseGame{
 
   TRex tRex;
   Horizon horizon;
+  GameOverPanel gameOverPanel;
   TRexGameStatus status = TRexGameStatus.waiting;
 
   double currentSpeed = GameConfig.speed;
@@ -22,11 +24,18 @@ class TRexGame extends BaseGame{
   }) {
     tRex = new TRex(spriteImage);
     horizon = new Horizon(spriteImage);
+    gameOverPanel = new GameOverPanel(spriteImage);
 
-    this..add(horizon)..add(tRex);
+    this..add(horizon)..add(tRex)..add(gameOverPanel);
 
   }
+
+
   void onTap() {
+    if(gameOver){
+      reset();
+      return;
+    }
     tRex.startJump(this.currentSpeed);
   }
 
@@ -34,6 +43,8 @@ class TRexGame extends BaseGame{
   void update(double t) {
     tRex.update(t);
     horizon.updateWithSpeed(0.0, this.currentSpeed);
+
+    if(gameOver) return;
 
     if(tRex.playingIntro && tRex.x >= TRexConfig.startXPos ) {
       startGame();
@@ -45,8 +56,6 @@ class TRexGame extends BaseGame{
       horizon.updateWithSpeed(t, this.currentSpeed);
     }
 
-
-
     var obstacles = horizon.horizonLine.obstacleManager.components;
     bool collision = obstacles.length > 0 && checkForCollision(obstacles.first, tRex);
     if(!collision){
@@ -54,11 +63,8 @@ class TRexGame extends BaseGame{
         this.currentSpeed += GameConfig.acceleration;
       }
     } else {
-      gameOver();
+      doGameOver();
     }
-
-
-
   }
 
   void startGame () {
@@ -67,13 +73,21 @@ class TRexGame extends BaseGame{
     tRex.hasPlayedIntro = true;
   }
 
-
-
   bool get playing => status ==  TRexGameStatus.playing;
-  int count = 0;
-  void gameOver() {
-    count++;
-    print("collision! $count");
+  bool get gameOver => status == TRexGameStatus.gameOver;
+
+  void doGameOver() {
+    this.gameOverPanel.visible = true;
+    stop();
+    tRex.status = TRexStatus.crashed;
+  }
+
+  void stop() {
+    this.status = TRexGameStatus.gameOver;
+  }
+
+  void reset() {
+
   }
 }
 
