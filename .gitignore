@@ -8,4 +8,6 @@
 
 build/
 
+android/key.properties
+
 .flutter-plugins
