@@ -25,7 +25,7 @@ class CloudManager extends PositionComponent with Resizable, ComposedComponent {
 
       Cloud lastCloud = components.last;
       if(numClouds < HorizonConfig.maxClouds &&
-          (HorizonDimensions.width - lastCloud.x) > lastCloud.cloudGap &&
+          (HorizonDimensions.width /2 - lastCloud.x) > lastCloud.cloudGap &&
           HorizonConfig.cloudFrequency > rnd.nextDouble()
       ) {
         addCloud();
@@ -37,7 +37,7 @@ class CloudManager extends PositionComponent with Resizable, ComposedComponent {
 
   addCloud(){
     Cloud cloud = Cloud(spriteImage);
-    cloud.x = HorizonDimensions.width;
+    cloud.x = HorizonDimensions.width /2;
     cloud.y = (y/2 - (CloudConfig.maxSkyLevel - CloudConfig.minSkyLevel)) + getRandomNum(CloudConfig.minSkyLevel, CloudConfig.maxSkyLevel);
     components.add(cloud);
   }
