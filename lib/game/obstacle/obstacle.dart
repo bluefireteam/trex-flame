@@ -21,8 +21,8 @@ class ObstacleManager extends PositionComponent with Resizable, ComposedComponen
 
   void updateWithSpeed(double t, double speed) {
     updateComponents((c){
-      Obstacle cloud = c as Obstacle;
-      cloud.updateWithSpeed(t, speed);
+        Obstacle cloud = c as Obstacle;
+        cloud.updateWithSpeed(t, speed);
     });
 
     if(components.length > 0) {
@@ -54,7 +54,6 @@ class ObstacleManager extends PositionComponent with Resizable, ComposedComponen
       Obstacle obstacle = Obstacle(type, obstacleSprite, speed, GameConfig.gapCoefficient, type.width);
 
       obstacle.x = HorizonDimensions.width;
-      obstacle.y += y - 75.0;
 
       components.add(obstacle);
 
@@ -80,11 +79,19 @@ class ObstacleManager extends PositionComponent with Resizable, ComposedComponen
     history.clear();
   }
 
+  @override
+  void update(double t){
+    updateComponents((c){
+      Obstacle cloud = c as Obstacle;
+      cloud.y = this.y + cloud.type.y - 75;
+    });
+
+  }
 
 }
 
 
-class Obstacle extends SpriteComponent{
+class Obstacle extends SpriteComponent with Resizable{
   List<CollisionBox> collisionBoxes = new List();
   ObstacleType type;
 
@@ -92,23 +99,24 @@ class Obstacle extends SpriteComponent{
   bool followingObstacleCreated = false;
   double gap = 0.0;
   double width = 0.0;
-  int size;
+  int internalSize;
 
   Obstacle(this.type, Sprite sprite, double speed, double gapCoefficient, [double opt_xOffset])
     : super.fromSprite(type.width, type.height, sprite) {
     cloneCollisionBoxes();
 
-    size = getRandomNum(1.0, ObstacleConfig.maxObstacleLength/1).floor();
+    internalSize = getRandomNum(1.0, ObstacleConfig.maxObstacleLength/1).floor();
     x = HorizonDimensions.width + (opt_xOffset ?? 0.0);
 
-    if (this.size > 1 && type.multipleSpeed > speed) {
-      this.size = 1;
+    if (this.internalSize > 1 && type.multipleSpeed > speed) {
+      this.internalSize = 1;
     }
 
-    width = this.type.width * size;
+    width = this.type.width * internalSize;
     Rect actualSrc = this.sprite.src;
     this.sprite.src = Rect.fromLTWH(actualSrc.left, actualSrc.top, width, actualSrc.height);
-    y = type.y;
+    print(size);
+
 
     gap = this.getGap(gapCoefficient, speed);
   }
@@ -140,7 +148,6 @@ class Obstacle extends SpriteComponent{
 
   bool get isVisible =>  x + this.width > 0;
 
-
   void cloneCollisionBoxes() {
     List<CollisionBox> typeCollisionBoxes = type.collisionBoxes;
 
@@ -152,7 +159,6 @@ class Obstacle extends SpriteComponent{
         height: box.height,
       ));
     });
-
 
   }
 

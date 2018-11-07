@@ -15,7 +15,7 @@ bool checkForCollision(Obstacle obstacle, TRex tRex) {
   CollisionBox obstacleBox = CollisionBox(
     x: obstacle.x + 1,
     y: obstacle.y + 1,
-    width: obstacle.type.width * obstacle.size -2,
+    width: obstacle.type.width * obstacle.internalSize -2,
     height: obstacle.type.height - 2,
   );
 

@@ -21,6 +21,8 @@ class CloudManager extends PositionComponent with Resizable, ComposedComponent {
         Cloud cloud = c as Cloud;
         cloud.updateWithSpeed(t, cloudSpeed);
       });
+
+
       Cloud lastCloud = components.last;
       if(numClouds < HorizonConfig.maxClouds &&
           (HorizonDimensions.width - lastCloud.x) > lastCloud.cloudGap &&
@@ -38,13 +40,6 @@ class CloudManager extends PositionComponent with Resizable, ComposedComponent {
     cloud.x = HorizonDimensions.width;
     cloud.y = (y/2 - (CloudConfig.maxSkyLevel - CloudConfig.minSkyLevel)) + getRandomNum(CloudConfig.minSkyLevel, CloudConfig.maxSkyLevel);
     components.add(cloud);
-  }
-
-  void resize(Size size){
-    updateComponents((cloud) {
-      (cloud as Cloud).y = (y/2 - (CloudConfig.maxSkyLevel - CloudConfig.minSkyLevel)) + getRandomNum(CloudConfig.minSkyLevel, CloudConfig.maxSkyLevel);
-    });
-    super.resize(size);
   }
 
   void reset() {
@@ -92,5 +87,10 @@ class Cloud extends SpriteComponent with Resizable {
 
   bool get isVisible {
     return x + CloudConfig.width > 0;
+  }
+
+  @override
+  resize(Size size) {
+    y = (y/2 - (CloudConfig.maxSkyLevel - CloudConfig.minSkyLevel)) + getRandomNum(CloudConfig.minSkyLevel, CloudConfig.maxSkyLevel);
   }
 }
