@@ -17,6 +17,6 @@ class GameConfig {
   static int maxObstacleDuplication = 2;
   static double maxSpeed = 13.0;
   static double minJumpHeight = 35.0;
-  static double speed = 6.0;
+  static double speed = 6.5;
   static double speedDropCoefficient = 3.0;
 }

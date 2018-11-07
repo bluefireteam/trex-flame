@@ -18,6 +18,7 @@ class TRexGame extends BaseGame{
   TRexGameStatus status = TRexGameStatus.waiting;
 
   double currentSpeed = GameConfig.speed;
+  double timePlaying = 0.0;
 
   TRexGame({
     Image spriteImage
@@ -54,18 +55,20 @@ class TRexGame extends BaseGame{
     }
 
     if(this.playing){
+      timePlaying += t;
       horizon.updateWithSpeed(t, this.currentSpeed);
+
+      var obstacles = horizon.horizonLine.obstacleManager.components;
+      bool collision = obstacles.length > 0 && checkForCollision(obstacles.first, tRex);
+      if(!collision){
+        if (this.currentSpeed < GameConfig.maxSpeed) {
+          this.currentSpeed += GameConfig.acceleration;
+        }
+      } else {
+        doGameOver();
+      }
     }
 
-    var obstacles = horizon.horizonLine.obstacleManager.components;
-    bool collision = obstacles.length > 0 && checkForCollision(obstacles.first, tRex);
-    if(!collision){
-      if (this.currentSpeed < GameConfig.maxSpeed) {
-        this.currentSpeed += GameConfig.acceleration;
-      }
-    } else {
-      doGameOver();
-    }
   }
 
   void startGame () {
@@ -93,6 +96,7 @@ class TRexGame extends BaseGame{
     horizon.reset();
     currentSpeed = GameConfig.speed;
     gameOverPanel.visible = false;
+    timePlaying = 0.0;
 
   }
 }
