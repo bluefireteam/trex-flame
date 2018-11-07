@@ -85,7 +85,7 @@ class ObstacleManager extends PositionComponent with Resizable, ComposedComponen
       Obstacle cloud = c as Obstacle;
       cloud.y = this.y + cloud.type.y - 75;
     });
-
+    super.update(t);
   }
 
 }
