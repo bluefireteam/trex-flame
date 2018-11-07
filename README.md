@@ -1,8 +1,5 @@
-# trex
+# Trex game Flutter edition
 
-A new Flutter project.
+![https://cdn-images-1.medium.com/max/1600/1*BadLUm5ZzpcS34eTVQAz5g.gif](https://cdn-images-1.medium.com/max/1600/1*BadLUm5ZzpcS34eTVQAz5g.gif)
 
-## Getting Started
-
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
+The joy of our offline hours recreated with [Flutter](https://github.com/flutter/flutter) and [Flame](https://github.com/luanpotter/flame)
