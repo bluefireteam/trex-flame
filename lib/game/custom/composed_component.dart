@@ -5,7 +5,7 @@ import 'package:ordered_set/ordered_set.dart';
 import 'package:flutter/painting.dart';
 import 'package:flame/components/resizable.dart';
 
-abstract class ComposedComponent extends Component {
+abstract class ComposedComponent implements Component {
   OrderedSet<Component> components = new OrderedSet(Comparing.on((c) => c.priority()));
 
   @override
