@@ -1,5 +1,4 @@
-
-class CollisionBox{
+class CollisionBox {
   final double x;
   final double y;
   final double width;

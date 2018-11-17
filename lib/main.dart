@@ -20,13 +20,12 @@ void main() async {
     ..onTapDown = (TapDownDetails evt) => tRexGame.onTap());
 }
 
-class GameWrapper extends StatelessWidget{
+class GameWrapper extends StatelessWidget {
   final TRexGame tRexGame;
   GameWrapper(this.tRexGame);
-  
+
   @override
   Widget build(BuildContext context) {
     return tRexGame.widget;
   }
 }
-

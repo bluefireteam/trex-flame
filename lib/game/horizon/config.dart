@@ -1,4 +1,4 @@
-class HorizonConfig{
+class HorizonConfig {
   static double cloudFrequency = 0.5;
   static int maxClouds = 6;
   static double bgCloudSpeed = 0.2;
@@ -11,7 +11,6 @@ class HorizonDimensions {
 }
 
 class CloudConfig {
-
   static double height = 28.0;
 
   static double maxCloudGap = 400.0;

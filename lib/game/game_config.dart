@@ -1,4 +1,3 @@
-
 class GameConfig {
   static double acceleration = 0.001;
   static double bgCloudSpeed = 0.2;

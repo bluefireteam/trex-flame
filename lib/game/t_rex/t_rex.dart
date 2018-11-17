@@ -5,7 +5,6 @@ import 'package:flame/components/animation_component.dart';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/resizable.dart';
 import 'package:flame/sprite.dart';
-import 'package:trex/game/collision/collision_box.dart';
 import 'package:trex/game/t_rex/config.dart';
 
 enum TRexStatus { crashed, ducking, jumping, running, waiting, intro }
@@ -25,16 +24,15 @@ class TRex extends PositionComponent with Resizable {
   int jumpCount = 0;
   bool hasPlayedIntro = false;
 
-  TRex(Image spriteImage) :
-        runningDino = RunningTRex(spriteImage),
+  TRex(Image spriteImage)
+      : runningDino = RunningTRex(spriteImage),
         idleDino = WaitingTRex(spriteImage),
         jumpingTRex = JumpingTRex(spriteImage),
         surprisedTRex = SurprisedTRex(spriteImage),
         super();
 
-
   PositionComponent get actualDino {
-    switch(status){
+    switch (status) {
       case TRexStatus.waiting:
         return idleDino;
       case TRexStatus.jumping:
@@ -49,13 +47,12 @@ class TRex extends PositionComponent with Resizable {
     }
   }
 
-  void startJump (double speed){
-    if(status == TRexStatus.jumping || status == TRexStatus.ducking) return;
+  void startJump(double speed) {
+    if (status == TRexStatus.jumping || status == TRexStatus.ducking) return;
 
     status = TRexStatus.jumping;
     this.jumpVelocity = TRexConfig.initialJumpVelocity - (speed / 10);
     this.reachedMinHeight = false;
-
   }
 
   @override
@@ -71,7 +68,7 @@ class TRex extends PositionComponent with Resizable {
   }
 
   void update(double t) {
-    if (status == TRexStatus.jumping){
+    if (status == TRexStatus.jumping) {
       y += (jumpVelocity);
       this.jumpVelocity += TRexConfig.gravity;
       if (this.y > this.groundYPos) {
@@ -83,74 +80,87 @@ class TRex extends PositionComponent with Resizable {
     }
 
     // intro related
-    if(jumpCount == 1 && !playingIntro && !hasPlayedIntro){
+    if (jumpCount == 1 && !playingIntro && !hasPlayedIntro) {
       status = TRexStatus.intro;
     }
     if (playingIntro && x < TRexConfig.startXPos) {
       x += ((TRexConfig.startXPos / TRexConfig.introDuration) * t * 5000);
     }
 
-
     updateCoordinates(t);
   }
-  void updateCoordinates(double t){
+
+  void updateCoordinates(double t) {
     this.actualDino.x = x;
     this.actualDino.y = y;
     this.actualDino.update(t);
   }
 
   double get groundYPos {
-    if(size == null) return 0.0;
+    if (size == null) return 0.0;
     return (size.height / 2) - TRexConfig.height / 2;
   }
+
   bool get playingIntro => status == TRexStatus.intro;
 
   bool get ducking => status == TRexStatus.ducking;
 }
 
-
 class RunningTRex extends AnimationComponent {
-  RunningTRex(Image spriteImage) : super(88.0, 90.0, Animation.spriteList([
-    Sprite.fromImage(spriteImage,
-      width: TRexConfig.width,
-      height: TRexConfig.height,
-      y: 4.0,
-      x: 1514.0,
-    ),
-    Sprite.fromImage(spriteImage,
-      width: TRexConfig.width,
-      height: TRexConfig.height,
-      y: 4.0,
-      x: 1602.0,
-    ),
-  ], stepTime: 0.2, loop: true));
-
+  RunningTRex(Image spriteImage)
+      : super(
+            88.0,
+            90.0,
+            Animation.spriteList([
+              Sprite.fromImage(
+                spriteImage,
+                width: TRexConfig.width,
+                height: TRexConfig.height,
+                y: 4.0,
+                x: 1514.0,
+              ),
+              Sprite.fromImage(
+                spriteImage,
+                width: TRexConfig.width,
+                height: TRexConfig.height,
+                y: 4.0,
+                x: 1602.0,
+              ),
+            ], stepTime: 0.2, loop: true));
 }
 
-class WaitingTRex extends SpriteComponent  {
-  WaitingTRex(Image spriteImage) : super.fromSprite(TRexConfig.width, TRexConfig.height, Sprite.fromImage(spriteImage,
-      width: TRexConfig.width,
-      height: TRexConfig.height,
-      x: 76.0,
-      y: 6.0
-  ));
+class WaitingTRex extends SpriteComponent {
+  WaitingTRex(Image spriteImage)
+      : super.fromSprite(
+            TRexConfig.width,
+            TRexConfig.height,
+            Sprite.fromImage(spriteImage,
+                width: TRexConfig.width,
+                height: TRexConfig.height,
+                x: 76.0,
+                y: 6.0));
 }
 
 class JumpingTRex extends SpriteComponent {
-  JumpingTRex(Image spriteImage) : super.fromSprite(TRexConfig.width, TRexConfig.height, Sprite.fromImage(spriteImage,
-      width: TRexConfig.width,
-      height: TRexConfig.height,
-      x: 1339.0,
-      y: 6.0
-  ));
+  JumpingTRex(Image spriteImage)
+      : super.fromSprite(
+            TRexConfig.width,
+            TRexConfig.height,
+            Sprite.fromImage(spriteImage,
+                width: TRexConfig.width,
+                height: TRexConfig.height,
+                x: 1339.0,
+                y: 6.0));
 }
 
-
 class SurprisedTRex extends SpriteComponent {
-  SurprisedTRex(Image spriteImage) : super.fromSprite(TRexConfig.width, TRexConfig.height, Sprite.fromImage(spriteImage,
-    width: TRexConfig.width,
-    height: TRexConfig.height,
-    x: 1782.0,
-    y: 6.0
-  ));
+  SurprisedTRex(Image spriteImage)
+      : super.fromSprite(
+            TRexConfig.width,
+            TRexConfig.height,
+            Sprite.fromImage(spriteImage,
+                width: TRexConfig.width,
+                height: TRexConfig.height,
+                x: 1782.0,
+                y: 6.0));
 }

@@ -10,8 +10,7 @@ import 'package:trex/game/t_rex/t_rex.dart';
 
 enum TRexGameStatus { playing, waiting, gameOver }
 
-class TRexGame extends BaseGame{
-
+class TRexGame extends BaseGame {
   TRex tRex;
   Horizon horizon;
   GameOverPanel gameOverPanel;
@@ -20,20 +19,16 @@ class TRexGame extends BaseGame{
   double currentSpeed = GameConfig.speed;
   double timePlaying = 0.0;
 
-  TRexGame({
-    Image spriteImage
-  }) {
+  TRexGame({Image spriteImage}) {
     tRex = new TRex(spriteImage);
     horizon = new Horizon(spriteImage);
     gameOverPanel = new GameOverPanel(spriteImage);
 
     this..add(horizon)..add(tRex)..add(gameOverPanel);
-
   }
 
-
   void onTap() {
-    if(gameOver){
+    if (gameOver) {
       restart();
       return;
     }
@@ -42,25 +37,25 @@ class TRexGame extends BaseGame{
 
   @override
   void update(double t) {
-
     tRex.update(t);
     horizon.updateWithSpeed(0.0, this.currentSpeed);
 
-    if(gameOver) return;
+    if (gameOver) return;
 
-    if(tRex.playingIntro && tRex.x >= TRexConfig.startXPos ) {
+    if (tRex.playingIntro && tRex.x >= TRexConfig.startXPos) {
       startGame();
     } else if (tRex.playingIntro) {
       horizon.updateWithSpeed(0.0, this.currentSpeed);
     }
 
-    if(this.playing){
+    if (this.playing) {
       timePlaying += t;
       horizon.updateWithSpeed(t, this.currentSpeed);
 
       var obstacles = horizon.horizonLine.obstacleManager.components;
-      bool collision = obstacles.length > 0 && checkForCollision(obstacles.first, tRex);
-      if(!collision){
+      bool collision =
+          obstacles.length > 0 && checkForCollision(obstacles.first, tRex);
+      if (!collision) {
         if (this.currentSpeed < GameConfig.maxSpeed) {
           this.currentSpeed += GameConfig.acceleration;
         }
@@ -68,16 +63,15 @@ class TRexGame extends BaseGame{
         doGameOver();
       }
     }
-
   }
 
-  void startGame () {
+  void startGame() {
     tRex.status = TRexStatus.running;
     status = TRexGameStatus.playing;
     tRex.hasPlayedIntro = true;
   }
 
-  bool get playing => status ==  TRexGameStatus.playing;
+  bool get playing => status == TRexGameStatus.playing;
   bool get gameOver => status == TRexGameStatus.gameOver;
 
   void doGameOver() {
@@ -97,8 +91,5 @@ class TRexGame extends BaseGame{
     currentSpeed = GameConfig.speed;
     gameOverPanel.visible = false;
     timePlaying = 0.0;
-
   }
 }
-
-

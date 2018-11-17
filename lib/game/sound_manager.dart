@@ -1,4 +1,1 @@
-
-class SoundManager {
-
-}
+class SoundManager {}

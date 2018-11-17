@@ -13,8 +13,6 @@ import 'package:trex/game/obstacle/obstacle.dart';
 
 Random rnd = new Random();
 
-
-
 class HorizonLine extends PositionComponent with Resizable, ComposedComponent {
   HorizonGround firstGround;
   HorizonGround secondGround;
@@ -25,15 +23,16 @@ class HorizonLine extends PositionComponent with Resizable, ComposedComponent {
   final double bumpThreshold = 0.5;
 
   HorizonLine(Image spriteImage) {
-
-    Sprite softSprite = Sprite.fromImage(spriteImage,
+    Sprite softSprite = Sprite.fromImage(
+      spriteImage,
       width: HorizonDimensions.width,
       height: HorizonDimensions.height,
       y: 104.0,
       x: 2.0,
     );
 
-    Sprite bumpySprite = Sprite.fromImage(spriteImage,
+    Sprite bumpySprite = Sprite.fromImage(
+      spriteImage,
       width: HorizonDimensions.width,
       height: HorizonDimensions.height,
       y: 104.0,
@@ -44,10 +43,14 @@ class HorizonLine extends PositionComponent with Resizable, ComposedComponent {
     this.obstacleManager = ObstacleManager(spriteImage);
     this.firstGround = HorizonGround(softSprite);
     this.secondGround = HorizonGround(bumpySprite);
-    this..add(firstGround)..add(secondGround)..add(cloudManager)..add(obstacleManager);
+    this
+      ..add(firstGround)
+      ..add(secondGround)
+      ..add(cloudManager)
+      ..add(obstacleManager);
   }
 
-  bool getRandomType () {
+  bool getRandomType() {
     return rnd.nextDouble() > this.bumpThreshold;
   }
 
@@ -58,7 +61,7 @@ class HorizonLine extends PositionComponent with Resizable, ComposedComponent {
     first.x -= increment;
     second.x = first.x + HorizonDimensions.width;
 
-    if(first.x <= -HorizonDimensions.width){
+    if (first.x <= -HorizonDimensions.width) {
       first.x += HorizonDimensions.width * 2;
       second.x = first.x - HorizonDimensions.width;
     }
@@ -74,8 +77,8 @@ class HorizonLine extends PositionComponent with Resizable, ComposedComponent {
     super.update(t);
   }
 
-  void update (t) {
-    this.updateComponents((c){
+  void update(t) {
+    this.updateComponents((c) {
       PositionComponent positionComponent = c as PositionComponent;
       positionComponent.y = y;
     });
@@ -91,6 +94,7 @@ class HorizonLine extends PositionComponent with Resizable, ComposedComponent {
 }
 
 class HorizonGround extends SpriteComponent with Resizable {
-  HorizonGround(Sprite sprite) :
-        super.fromSprite(HorizonDimensions.width, HorizonDimensions.height, sprite);
+  HorizonGround(Sprite sprite)
+      : super.fromSprite(
+            HorizonDimensions.width, HorizonDimensions.height, sprite);
 }

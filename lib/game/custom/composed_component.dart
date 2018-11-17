@@ -1,4 +1,3 @@
-
 import 'package:flame/components/component.dart';
 import 'package:ordered_set/comparing.dart';
 import 'package:ordered_set/ordered_set.dart';
@@ -6,7 +5,8 @@ import 'package:flutter/painting.dart';
 import 'package:flame/components/resizable.dart';
 
 abstract class ComposedComponent implements Component {
-  OrderedSet<Component> components = new OrderedSet(Comparing.on((c) => c.priority()));
+  OrderedSet<Component> components =
+      new OrderedSet(Comparing.on((c) => c.priority()));
 
   @override
   render(Canvas canvas) {
@@ -30,7 +30,7 @@ abstract class ComposedComponent implements Component {
   void add(Component c) {
     this.components.add(c);
 
-    if(this is Resizable){
+    if (this is Resizable) {
       // first time resize
       Resizable thisResizable = this as Resizable;
       if (thisResizable.size != null) {
@@ -39,17 +39,16 @@ abstract class ComposedComponent implements Component {
     }
   }
 
-  void updateComponents (Function itractionCB){
+  void updateComponents(Function itractionCB) {
     components.forEach(itractionCB);
   }
 
   @override
   void resize(Size size) {
-    if(this is Resizable){
+    if (this is Resizable) {
       Resizable thisResizable = this as Resizable;
       thisResizable.size = size;
       components.forEach((c) => c.resize(size));
     }
   }
-
 }

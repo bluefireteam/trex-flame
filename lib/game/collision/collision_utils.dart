@@ -15,22 +15,24 @@ bool checkForCollision(Obstacle obstacle, TRex tRex) {
   CollisionBox obstacleBox = CollisionBox(
     x: obstacle.x + 1,
     y: obstacle.y + 1,
-    width: obstacle.type.width * obstacle.internalSize -2,
+    width: obstacle.type.width * obstacle.internalSize - 2,
     height: obstacle.type.height - 2,
   );
 
-  if(boxCompare(tRexBox, obstacleBox)){
-
+  if (boxCompare(tRexBox, obstacleBox)) {
     List<CollisionBox> collisionBoxes = obstacle.collisionBoxes;
-    List<CollisionBox> tRexCollisionBoxes = tRex.ducking ? TRexCollisionBoxes.ducking : TRexCollisionBoxes.running;
+    List<CollisionBox> tRexCollisionBoxes =
+        tRex.ducking ? TRexCollisionBoxes.ducking : TRexCollisionBoxes.running;
 
     bool crashed = false;
 
     collisionBoxes.forEach((obstacleCollisionBox) {
-      CollisionBox adjObstacleBox = createAdjustedCollisionBox(obstacleCollisionBox, obstacleBox);
+      CollisionBox adjObstacleBox =
+          createAdjustedCollisionBox(obstacleCollisionBox, obstacleBox);
 
-      tRexCollisionBoxes.forEach((tRexCollisionBox){
-        CollisionBox adjTRexBox = createAdjustedCollisionBox(tRexCollisionBox, tRexBox);
+      tRexCollisionBoxes.forEach((tRexCollisionBox) {
+        CollisionBox adjTRexBox =
+            createAdjustedCollisionBox(tRexCollisionBox, tRexBox);
         crashed = crashed || boxCompare(adjTRexBox, adjObstacleBox);
       });
     });
@@ -40,7 +42,6 @@ bool checkForCollision(Obstacle obstacle, TRex tRex) {
 }
 
 bool boxCompare(CollisionBox tRexBox, CollisionBox obstacleBox) {
-
   final double obstacleX = obstacleBox.x;
   final double obstacleY = obstacleBox.y;
 
@@ -50,11 +51,11 @@ bool boxCompare(CollisionBox tRexBox, CollisionBox obstacleBox) {
       tRexBox.height + tRexBox.y > obstacleY);
 }
 
-CollisionBox createAdjustedCollisionBox(CollisionBox box, CollisionBox adjustment) {
+CollisionBox createAdjustedCollisionBox(
+    CollisionBox box, CollisionBox adjustment) {
   return CollisionBox(
-    x: box.x + adjustment.x,
-    y: box.y + adjustment.y,
-    width: box.width,
-    height: box.height
-  );
+      x: box.x + adjustment.x,
+      y: box.y + adjustment.y,
+      width: box.width,
+      height: box.height);
 }
