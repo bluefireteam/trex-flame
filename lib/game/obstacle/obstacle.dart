@@ -116,7 +116,6 @@ class Obstacle extends SpriteComponent with Resizable {
     Rect actualSrc = this.sprite.src;
     this.sprite.src =
         Rect.fromLTWH(actualSrc.left, actualSrc.top, width, actualSrc.height);
-    print(size);
 
     gap = this.getGap(gapCoefficient, speed);
   }

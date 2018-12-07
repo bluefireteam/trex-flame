@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 import 'package:flame/flame.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:trex/game/game.dart';
 
 void main() async {
@@ -18,6 +19,8 @@ void main() async {
 
   Flame.util.addGestureRecognizer(new TapGestureRecognizer()
     ..onTapDown = (TapDownDetails evt) => tRexGame.onTap());
+
+  SystemChrome.setEnabledSystemUIOverlays([]);
 }
 
 class GameWrapper extends StatelessWidget {
