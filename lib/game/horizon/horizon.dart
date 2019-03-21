@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/resizable.dart';
 
-import 'package:trex/game/custom/composed_component.dart';
+import 'package:flame/components/composed_component.dart';
 import 'package:trex/game/horizon/horizon_line.dart';
 
 class Horizon extends PositionComponent with Resizable, ComposedComponent {
@@ -23,7 +23,7 @@ class Horizon extends PositionComponent with Resizable, ComposedComponent {
     if (size == null) return;
     y = (size.height / 2) + 21.0;
 
-    this.updateComponents((c) {
+    components.forEach((c) {
       PositionComponent positionComponent = c as PositionComponent;
       positionComponent.y = y;
     });

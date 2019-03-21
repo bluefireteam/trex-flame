@@ -1,5 +1,4 @@
 import 'package:trex/game/collision/collision_box.dart';
-import 'package:trex/game/game.dart';
 import 'package:trex/game/obstacle/obstacle.dart';
 import 'package:trex/game/t_rex/config.dart';
 import 'package:trex/game/t_rex/t_rex.dart';

@@ -16,7 +16,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flame: ^0.9.5
+  flame: ^0.10.2
 
 dev_dependencies:
   flutter_test:

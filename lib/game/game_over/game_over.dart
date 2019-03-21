@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flame/components/component.dart';
 import 'package:flame/components/resizable.dart';
+import 'package:flame/components/composed_component.dart';
 import 'package:flame/sprite.dart';
-import 'package:trex/game/custom/composed_component.dart';
 import 'package:trex/game/game_over/config.dart';
 
 class GameOverPanel extends PositionComponent

@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/resizable.dart';
 import 'package:flame/sprite.dart';
-import 'package:trex/game/custom/composed_component.dart';
+import 'package:flame/components/composed_component.dart';
 import 'package:trex/game/custom/util.dart';
 import 'package:trex/game/horizon/config.dart';
 
@@ -16,7 +16,7 @@ class CloudManager extends PositionComponent with Resizable, ComposedComponent {
     final int numClouds = this.components.length;
 
     if (numClouds > 0) {
-      this.updateComponents((c) {
+      components.forEach((c) {
         Cloud cloud = c as Cloud;
         cloud.updateWithSpeed(t, cloudSpeed);
       });

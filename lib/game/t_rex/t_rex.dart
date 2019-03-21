@@ -3,10 +3,10 @@ import 'dart:ui';
 import 'package:flame/animation.dart';
 import 'package:flame/components/animation_component.dart';
 import 'package:flame/components/component.dart';
+import 'package:flame/components/composed_component.dart';
 import 'package:flame/components/resizable.dart';
 import 'package:flame/sprite.dart';
 import 'package:trex/game/t_rex/config.dart';
-import 'package:trex/game/custom/composed_component.dart';
 
 enum TRexStatus { crashed, ducking, jumping, running, waiting, intro }
 

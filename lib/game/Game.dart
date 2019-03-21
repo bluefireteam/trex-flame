@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:flame/components/resizable.dart';
 import 'package:flame/game.dart';
 import 'package:trex/game/Horizon/horizon.dart';
 import 'package:trex/game/collision/collision_utils.dart';

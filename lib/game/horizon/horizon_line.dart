@@ -6,7 +6,7 @@ import 'package:flame/sprite.dart';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/resizable.dart';
 
-import 'package:trex/game/custom/composed_component.dart';
+import 'package:flame/components/composed_component.dart';
 import 'package:trex/game/horizon/clouds.dart';
 import 'package:trex/game/horizon/config.dart';
 import 'package:trex/game/obstacle/obstacle.dart';
@@ -78,7 +78,7 @@ class HorizonLine extends PositionComponent with Resizable, ComposedComponent {
   }
 
   void update(t) {
-    this.updateComponents((c) {
+    components.forEach((c) {
       PositionComponent positionComponent = c as PositionComponent;
       positionComponent.y = y;
     });

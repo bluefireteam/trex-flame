@@ -1,11 +1,10 @@
 import 'dart:collection';
 import 'dart:ui';
-
 import 'package:flame/components/component.dart';
 import 'package:flame/components/resizable.dart';
+import 'package:flame/components/composed_component.dart';
 import 'package:flame/sprite.dart';
 import 'package:trex/game/collision/collision_box.dart';
-import 'package:trex/game/custom/composed_component.dart';
 import 'package:trex/game/custom/util.dart';
 import 'package:trex/game/game_config.dart';
 import 'package:trex/game/horizon/config.dart';
@@ -20,7 +19,7 @@ class ObstacleManager extends PositionComponent
   ObstacleManager(this.spriteImage) : super();
 
   void updateWithSpeed(double t, double speed) {
-    updateComponents((c) {
+    components.forEach((c) {
       Obstacle cloud = c as Obstacle;
       cloud.updateWithSpeed(t, speed);
     });
@@ -81,7 +80,7 @@ class ObstacleManager extends PositionComponent
 
   @override
   void update(double t) {
-    updateComponents((c) {
+    components.forEach((c) {
       Obstacle cloud = c as Obstacle;
       cloud.y = this.y + cloud.type.y - 75;
     });
