@@ -1,6 +1,7 @@
 import 'dart:ui' as ui;
 
 import 'package:flame/flame.dart';
+import 'package:flame/game.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
