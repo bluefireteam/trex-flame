@@ -29,7 +29,6 @@ class TRexGame extends BaseGame {
   double timePlaying = 0.0;
 
   void onTap() {
-    print("ontaaap");
     if (gameOver) {
       restart();
       return;
