@@ -1,23 +1,15 @@
 name: trex
-description: A new Flutter project.
+description: The trex game mdew with flame!
 
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# Read more about versioning at semver.org.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+  sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-
-  flame:
-    path: ../../contrib/flame
+  flame: 0.16.1
 
 
 dev_dependencies:
@@ -26,7 +18,7 @@ dev_dependencies:
 
 
 # For information on the generic Dart part of this file, see the
-# following page: https://www.dartlang.org/tools/pub/pubspec
+# following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
@@ -34,4 +26,4 @@ flutter:
   uses-material-design: true
 
   assets:
-     - assets/images/sprite.png
+    - assets/images/sprite.png

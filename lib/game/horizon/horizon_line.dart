@@ -1,19 +1,49 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:flame/components/mixins/has_game_ref.dart';
+import 'package:flame/components/mixins/resizable.dart';
+import 'package:flame/components/mixins/tapable.dart';
 import 'package:flame/sprite.dart';
-
 import 'package:flame/components/component.dart';
-import 'package:flame/components/resizable.dart';
-
 import 'package:flame/components/composed_component.dart';
 import 'package:trex/game/horizon/clouds.dart';
 import 'package:trex/game/horizon/config.dart';
 import 'package:trex/game/obstacle/obstacle.dart';
 
-Random rnd = new Random();
+Random rnd = Random();
 
-class HorizonLine extends PositionComponent with Resizable, ComposedComponent {
+class HorizonLine extends PositionComponent
+    with HasGameRef, Tapable, ComposedComponent, Resizable {
+
+  HorizonLine(Image spriteImage) {
+    final softSprite = Sprite.fromImage(
+      spriteImage,
+      width: HorizonDimensions.width,
+      height: HorizonDimensions.height,
+      y: 104.0,
+      x: 2.0,
+    );
+
+    final bumpySprite = Sprite.fromImage(
+      spriteImage,
+      width: HorizonDimensions.width,
+      height: HorizonDimensions.height,
+      y: 104.0,
+      x: 2.0 + HorizonDimensions.width,
+    );
+
+    cloudManager = CloudManager(spriteImage);
+    obstacleManager = ObstacleManager(spriteImage);
+    firstGround = HorizonGround(softSprite);
+    secondGround = HorizonGround(bumpySprite);
+    this
+      ..add(firstGround)
+      ..add(secondGround)
+      ..add(cloudManager)
+      ..add(obstacleManager);
+  }
+
   HorizonGround firstGround;
   HorizonGround secondGround;
 
@@ -22,41 +52,13 @@ class HorizonLine extends PositionComponent with Resizable, ComposedComponent {
 
   final double bumpThreshold = 0.5;
 
-  HorizonLine(Image spriteImage) {
-    Sprite softSprite = Sprite.fromImage(
-      spriteImage,
-      width: HorizonDimensions.width,
-      height: HorizonDimensions.height,
-      y: 104.0,
-      x: 2.0,
-    );
-
-    Sprite bumpySprite = Sprite.fromImage(
-      spriteImage,
-      width: HorizonDimensions.width,
-      height: HorizonDimensions.height,
-      y: 104.0,
-      x: 2.0 + HorizonDimensions.width,
-    );
-
-    this.cloudManager = CloudManager(spriteImage);
-    this.obstacleManager = ObstacleManager(spriteImage);
-    this.firstGround = HorizonGround(softSprite);
-    this.secondGround = HorizonGround(bumpySprite);
-    this
-      ..add(firstGround)
-      ..add(secondGround)
-      ..add(cloudManager)
-      ..add(obstacleManager);
-  }
-
   bool getRandomType() {
-    return rnd.nextDouble() > this.bumpThreshold;
+    return rnd.nextDouble() > bumpThreshold;
   }
 
   void updateXPos(bool isBumpyFirst, double increment) {
-    HorizonGround first = isBumpyFirst ? firstGround : secondGround;
-    HorizonGround second = isBumpyFirst ? secondGround : firstGround;
+    final first = isBumpyFirst ? firstGround : secondGround;
+    final second = isBumpyFirst ? secondGround : firstGround;
 
     first.x -= increment;
     second.x = first.x + HorizonDimensions.width;
@@ -68,7 +70,7 @@ class HorizonLine extends PositionComponent with Resizable, ComposedComponent {
   }
 
   void updateWithSpeed(double t, double speed) {
-    double increment = (speed * 50 * t);
+    final increment = speed * 50 * t;
     updateXPos(firstGround.x <= 0, increment);
 
     cloudManager.updateWithSpeed(t, speed);
@@ -77,24 +79,28 @@ class HorizonLine extends PositionComponent with Resizable, ComposedComponent {
     super.update(t);
   }
 
+  @override
   void update(t) {
-    components.forEach((c) {
-      PositionComponent positionComponent = c as PositionComponent;
+    for ( final c in components ) {
+      final positionComponent = c as PositionComponent;
       positionComponent.y = y;
-    });
+    }
   }
 
   void reset() {
     cloudManager.reset();
     obstacleManager.reset();
 
-    this.firstGround.x = 0.0;
-    this.secondGround.y = HorizonDimensions.width;
+    firstGround.x = 0.0;
+    secondGround.y = HorizonDimensions.width;
   }
 }
 
 class HorizonGround extends SpriteComponent with Resizable {
   HorizonGround(Sprite sprite)
       : super.fromSprite(
-            HorizonDimensions.width, HorizonDimensions.height, sprite);
+          HorizonDimensions.width,
+          HorizonDimensions.height,
+          sprite,
+        );
 }

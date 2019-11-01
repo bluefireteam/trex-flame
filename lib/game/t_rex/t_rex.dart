@@ -4,13 +4,16 @@ import 'package:flame/animation.dart';
 import 'package:flame/components/animation_component.dart';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/composed_component.dart';
-import 'package:flame/components/resizable.dart';
+import 'package:flame/components/mixins/has_game_ref.dart';
+import 'package:flame/components/mixins/resizable.dart';
+import 'package:flame/components/mixins/tapable.dart';
 import 'package:flame/sprite.dart';
 import 'package:trex/game/t_rex/config.dart';
 
 enum TRexStatus { crashed, ducking, jumping, running, waiting, intro }
 
-class TRex extends PositionComponent with ComposedComponent, Resizable {
+class TRex extends PositionComponent
+    with HasGameRef, Tapable, ComposedComponent, Resizable {
   bool isIdle = true;
 
   TRexStatus status = TRexStatus.waiting;
