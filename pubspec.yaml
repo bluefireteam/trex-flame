@@ -13,6 +13,7 @@ dependencies:
 
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.7.3
   flutter_test:
     sdk: flutter
 
