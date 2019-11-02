@@ -4,5 +4,7 @@
 # This file should be version controlled and should not be manually edited.
 
 version:
-  revision: 09fbb7a9609794b3c86a69f8828c080520b86cf2
-  channel: rotate-on-scale-support
+  revision: 99fd65e79a8f5daafe9f50eb6ce278c81d10e73d
+  channel: master
+
+project_type: app

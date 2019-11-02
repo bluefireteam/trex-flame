@@ -4,14 +4,14 @@ import 'package:trex/game/t_rex/config.dart';
 import 'package:trex/game/t_rex/t_rex.dart';
 
 bool checkForCollision(Obstacle obstacle, TRex tRex) {
-  CollisionBox tRexBox = CollisionBox(
+  final tRexBox = CollisionBox(
     x: tRex.x + 1,
     y: tRex.y + 1,
     width: TRexConfig.width - 2,
     height: TRexConfig.height - 2,
   );
 
-  CollisionBox obstacleBox = CollisionBox(
+  final obstacleBox = CollisionBox(
     x: obstacle.x + 1,
     y: obstacle.y + 1,
     width: obstacle.type.width * obstacle.internalSize - 2,
@@ -19,18 +19,18 @@ bool checkForCollision(Obstacle obstacle, TRex tRex) {
   );
 
   if (boxCompare(tRexBox, obstacleBox)) {
-    List<CollisionBox> collisionBoxes = obstacle.collisionBoxes;
-    List<CollisionBox> tRexCollisionBoxes =
+    final collisionBoxes = obstacle.collisionBoxes;
+    final tRexCollisionBoxes =
         tRex.ducking ? TRexCollisionBoxes.ducking : TRexCollisionBoxes.running;
 
     bool crashed = false;
 
     collisionBoxes.forEach((obstacleCollisionBox) {
-      CollisionBox adjObstacleBox =
+      final adjObstacleBox =
           createAdjustedCollisionBox(obstacleCollisionBox, obstacleBox);
 
       tRexCollisionBoxes.forEach((tRexCollisionBox) {
-        CollisionBox adjTRexBox =
+        final adjTRexBox =
             createAdjustedCollisionBox(tRexCollisionBox, tRexBox);
         crashed = crashed || boxCompare(adjTRexBox, adjObstacleBox);
       });
@@ -44,17 +44,18 @@ bool boxCompare(CollisionBox tRexBox, CollisionBox obstacleBox) {
   final double obstacleX = obstacleBox.x;
   final double obstacleY = obstacleBox.y;
 
-  return (tRexBox.x < obstacleX + obstacleBox.width &&
+  return tRexBox.x < obstacleX + obstacleBox.width &&
       tRexBox.x + tRexBox.width > obstacleX &&
       tRexBox.y < obstacleBox.y + obstacleBox.height &&
-      tRexBox.height + tRexBox.y > obstacleY);
+      tRexBox.height + tRexBox.y > obstacleY;
 }
 
 CollisionBox createAdjustedCollisionBox(
     CollisionBox box, CollisionBox adjustment) {
   return CollisionBox(
-      x: box.x + adjustment.x,
-      y: box.y + adjustment.y,
-      width: box.width,
-      height: box.height);
+    x: box.x + adjustment.x,
+    y: box.y + adjustment.y,
+    width: box.width,
+    height: box.height,
+  );
 }

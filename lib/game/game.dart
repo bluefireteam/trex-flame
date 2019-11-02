@@ -11,6 +11,15 @@ import 'package:trex/game/t_rex/t_rex.dart';
 enum TRexGameStatus { playing, waiting, gameOver }
 
 class TRexGame extends BaseGame {
+
+  TRexGame({Image spriteImage}) {
+    tRex = TRex(spriteImage);
+    horizon = Horizon(spriteImage);
+    gameOverPanel = GameOverPanel(spriteImage);
+
+    this..add(horizon)..add(tRex)..add(gameOverPanel);
+  }
+
   TRex tRex;
   Horizon horizon;
   GameOverPanel gameOverPanel;
@@ -19,45 +28,39 @@ class TRexGame extends BaseGame {
   double currentSpeed = GameConfig.speed;
   double timePlaying = 0.0;
 
-  TRexGame({Image spriteImage}) {
-    tRex = new TRex(spriteImage);
-    horizon = new Horizon(spriteImage);
-    gameOverPanel = new GameOverPanel(spriteImage);
-
-    this..add(horizon)..add(tRex)..add(gameOverPanel);
-  }
-
   void onTap() {
     if (gameOver) {
       restart();
       return;
     }
-    tRex.startJump(this.currentSpeed);
+    tRex.startJump(currentSpeed);
   }
 
   @override
   void update(double t) {
     tRex.update(t);
-    horizon.updateWithSpeed(0.0, this.currentSpeed);
+    horizon.updateWithSpeed(0.0, currentSpeed);
 
-    if (gameOver) return;
+    if (gameOver) {
+      return;
+    }
 
     if (tRex.playingIntro && tRex.x >= TRexConfig.startXPos) {
       startGame();
     } else if (tRex.playingIntro) {
-      horizon.updateWithSpeed(0.0, this.currentSpeed);
+      horizon.updateWithSpeed(0.0, currentSpeed);
     }
 
-    if (this.playing) {
+    if (playing) {
       timePlaying += t;
-      horizon.updateWithSpeed(t, this.currentSpeed);
+      horizon.updateWithSpeed(t, currentSpeed);
 
-      var obstacles = horizon.horizonLine.obstacleManager.components;
-      bool collision =
-          obstacles.length > 0 && checkForCollision(obstacles.first, tRex);
-      if (!collision) {
-        if (this.currentSpeed < GameConfig.maxSpeed) {
-          this.currentSpeed += GameConfig.acceleration;
+      final obstacles = horizon.horizonLine.obstacleManager.components;
+      final hasCollision =
+          obstacles.isNotEmpty && checkForCollision(obstacles.first, tRex);
+      if (!hasCollision) {
+        if (currentSpeed < GameConfig.maxSpeed) {
+          currentSpeed += GameConfig.acceleration;
         }
       } else {
         doGameOver();
@@ -75,13 +78,13 @@ class TRexGame extends BaseGame {
   bool get gameOver => status == TRexGameStatus.gameOver;
 
   void doGameOver() {
-    this.gameOverPanel.visible = true;
+    gameOverPanel.visible = true;
     stop();
     tRex.status = TRexStatus.crashed;
   }
 
   void stop() {
-    this.status = TRexGameStatus.gameOver;
+    status = TRexGameStatus.gameOver;
   }
 
   void restart() {
