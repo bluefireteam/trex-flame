@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flame/game.dart';
-import 'package:trex/game/Horizon/horizon.dart';
+import 'package:trex/game/horizon/horizon.dart';
 import 'package:trex/game/collision/collision_utils.dart';
 import 'package:trex/game/game_config.dart';
 import 'package:trex/game/game_over/game_over.dart';
