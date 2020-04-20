@@ -1,37 +1,31 @@
-import 'dart:ui' as ui;
-
 import 'package:flame/flame.dart';
-import 'package:flutter/gestures.dart';
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flame_splash_screen/flame_splash_screen.dart';
 
 import 'package:trex/game/game.dart';
 
-void main() async {
-  Flame.audio.disableLog();
-
-  runApp(Title(
+void main() {
+  runApp(MaterialApp(
     title: 'TRexGame',
     color: Colors.white,
-    child: Container(
-      decoration: BoxDecoration( color: Colors.white),
-      child: TRexGameWrapper(),
+    debugShowCheckedModeBanner: false,
+    home: Scaffold(
+      body: TRexGameWrapper(),
     ),
   ));
 
-  SystemChrome.setEnabledSystemUIOverlays([]);
+  Flame.util.fullScreen();
 }
 
-
 class TRexGameWrapper extends StatefulWidget {
-
   @override
   _TRexGameWrapperState createState() => _TRexGameWrapperState();
 }
 
 class _TRexGameWrapperState extends State<TRexGameWrapper> {
-
-  List<ui.Image> image;
+  bool splashGone = false;
   TRexGame game;
 
   @override
@@ -40,19 +34,40 @@ class _TRexGameWrapperState extends State<TRexGameWrapper> {
     startGame();
   }
 
-  void startGame() async {
-    image = await Flame.images.loadAll(["sprite.png"]);
-    game = TRexGame(spriteImage: image[0]);
-    setState(() {});
-    Flame.util.addGestureRecognizer(TapGestureRecognizer()
-      ..onTapDown = (TapDownDetails evt) => game.onTap());
+  void startGame() {
+    Flame.images.loadAll(["sprite.png"]).then((image) => {
+          setState(() {
+            game = TRexGame(spriteImage: image[0]);
+          })
+        });
   }
 
   @override
   Widget build(BuildContext context) {
-    if(image == null || game == null) {
-      return Container();
+    return splashGone
+        ? _buildGame(context)
+        : FlameSplashScreen(
+            theme: FlameSplashTheme.white,
+            onFinish: (context) {
+              setState(() {
+                splashGone = true;
+              });
+            },
+          );
+  }
+
+  Widget _buildGame(BuildContext context) {
+    if (game == null) {
+      return const Center(
+        child: Text("Loading"),
+      );
     }
-    return game.widget;
+    return Container(
+      color: Colors.white,
+      constraints: const BoxConstraints.expand(),
+      child: Container(
+        child: game.widget,
+      ),
+    );
   }
 }
