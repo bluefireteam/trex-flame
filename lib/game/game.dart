@@ -22,14 +22,12 @@ class Bg extends Component with Resizable {
   }
 
   @override
-  void update(double t) {
-  }
+  void update(double t) {}
 }
 
 enum TRexGameStatus { playing, waiting, gameOver }
 
-class TRexGame extends BaseGame  {
-
+class TRexGame extends BaseGame {
   TRexGame({Image spriteImage}) {
     tRex = TRex(spriteImage);
     horizon = Horizon(spriteImage);
@@ -54,7 +52,6 @@ class TRexGame extends BaseGame  {
     }
     tRex.startJump(currentSpeed);
   }
-
 
   @override
   void update(double t) {
@@ -95,6 +92,7 @@ class TRexGame extends BaseGame  {
   }
 
   bool get playing => status == TRexGameStatus.playing;
+
   bool get gameOver => status == TRexGameStatus.gameOver;
 
   void doGameOver() {
@@ -116,4 +114,3 @@ class TRexGame extends BaseGame  {
     timePlaying = 0.0;
   }
 }
-
