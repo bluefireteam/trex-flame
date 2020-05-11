@@ -25,16 +25,21 @@ bool checkForCollision(Obstacle obstacle, TRex tRex) {
 
     bool crashed = false;
 
-    collisionBoxes.forEach((obstacleCollisionBox) {
-      final adjObstacleBox =
-          createAdjustedCollisionBox(obstacleCollisionBox, obstacleBox);
+    for (final obstacleCollisionBox in collisionBoxes) {
+      final adjObstacleBox = createAdjustedCollisionBox(
+        obstacleCollisionBox,
+        obstacleBox,
+      );
 
-      tRexCollisionBoxes.forEach((tRexCollisionBox) {
-        final adjTRexBox =
-            createAdjustedCollisionBox(tRexCollisionBox, tRexBox);
+      for (final tRexCollisionBox in tRexCollisionBoxes) {
+        final adjTRexBox = createAdjustedCollisionBox(
+          tRexCollisionBox,
+          tRexBox,
+        );
         crashed = crashed || boxCompare(adjTRexBox, adjObstacleBox);
-      });
-    });
+      }
+    }
+
     return crashed;
   }
   return false;

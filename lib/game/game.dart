@@ -97,12 +97,8 @@ class TRexGame extends BaseGame {
 
   void doGameOver() {
     gameOverPanel.visible = true;
-    stop();
-    tRex.status = TRexStatus.crashed;
-  }
-
-  void stop() {
     status = TRexGameStatus.gameOver;
+    tRex.status = TRexStatus.crashed;
   }
 
   void restart() {
