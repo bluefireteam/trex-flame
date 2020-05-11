@@ -19,7 +19,14 @@ class TRex extends PositionComponent with Resizable {
 
   bool isIdle = true;
 
-  TRexStatus status = TRexStatus.waiting;
+  TRexStatus _status = TRexStatus.waiting;
+
+  TRexStatus get status => _status;
+  void set status(TRexStatus status) {
+    _status = status;
+    actualDino.x = x;
+    actualDino.y = y;
+  }
 
   WaitingTRex idleDino;
   RunningTRex runningDino;
@@ -60,7 +67,6 @@ class TRex extends PositionComponent with Resizable {
 
   @override
   void render(Canvas c) {
-    actualDino.y != 255.0 ? print(actualDino.y) : 0.0;
     if (size == null) {
       return;
     }
@@ -93,6 +99,10 @@ class TRex extends PositionComponent with Resizable {
     }
     if (playingIntro && x < TRexConfig.startXPos) {
       x += (TRexConfig.startXPos / TRexConfig.introDuration) * t * 5000;
+    }
+
+    if(status == TRexStatus.crashed) {
+      actualDino.y != 405.0 ? print(actualDino.y) : 0.0;
     }
 
     actualDino.x = x;
