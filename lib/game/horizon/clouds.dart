@@ -29,8 +29,7 @@ class CloudManager extends PositionComponent
 
       final lastCloud = components.last as Cloud;
       if (numClouds < HorizonConfig.maxClouds &&
-          (HorizonDimensions.width / 2 - lastCloud.x) > lastCloud.cloudGap &&
-          HorizonConfig.cloudFrequency > rnd.nextDouble()) {
+          (size.width / 2 - lastCloud.x) > lastCloud.cloudGap) {
         addCloud();
       }
     } else {
@@ -40,7 +39,7 @@ class CloudManager extends PositionComponent
 
   void addCloud() {
     final cloud = Cloud(spriteImage);
-    cloud.x = HorizonDimensions.width / 2;
+    cloud.x = size.width + CloudConfig.width + 10;
     cloud.y = (y / 2 - (CloudConfig.maxSkyLevel - CloudConfig.minSkyLevel)) +
         getRandomNum(CloudConfig.minSkyLevel, CloudConfig.maxSkyLevel);
     components.add(cloud);

@@ -1,6 +1,6 @@
 class HorizonConfig {
   static double cloudFrequency = 0.5;
-  static int maxClouds = 6;
+  static int maxClouds = 20;
   static double bgCloudSpeed = 0.2;
 }
 

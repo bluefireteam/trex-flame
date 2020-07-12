@@ -62,7 +62,7 @@ class ObstacleManager extends PositionComponent
         type.width,
       );
 
-      obstacle.x = HorizonDimensions.width;
+      obstacle.x = size.width;
 
       components.add(obstacle);
 

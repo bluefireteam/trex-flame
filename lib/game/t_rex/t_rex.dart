@@ -101,10 +101,6 @@ class TRex extends PositionComponent with Resizable {
       x += (TRexConfig.startXPos / TRexConfig.introDuration) * t * 5000;
     }
 
-    if(status == TRexStatus.crashed) {
-      actualDino.y != 405.0 ? print(actualDino.y) : 0.0;
-    }
-
     actualDino.x = x;
     actualDino.y = y;
     actualDino.update(t);

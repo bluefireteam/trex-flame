@@ -2,7 +2,9 @@ import 'dart:ui';
 
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/resizable.dart';
+import 'package:flame/components/mixins/tapable.dart';
 import 'package:flame/game.dart';
+import 'package:flame/gestures.dart';
 import 'package:trex/game/horizon/horizon.dart';
 import 'package:trex/game/collision/collision_utils.dart';
 import 'package:trex/game/game_config.dart';
@@ -27,7 +29,7 @@ class Bg extends Component with Resizable {
 
 enum TRexGameStatus { playing, waiting, gameOver }
 
-class TRexGame extends BaseGame {
+class TRexGame extends BaseGame with MultiTouchTapDetector, HasTapableComponents {
   TRexGame({Image spriteImage}) {
     tRex = TRex(spriteImage);
     horizon = Horizon(spriteImage);
@@ -45,7 +47,11 @@ class TRexGame extends BaseGame {
   double timePlaying = 0.0;
 
   @override
-  void onTap() {
+  void onTapDown(_, __) {
+    onAction();
+  }
+
+  void onAction() {
     if (gameOver) {
       restart();
       return;
