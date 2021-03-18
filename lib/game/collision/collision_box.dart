@@ -1,13 +1,11 @@
+import 'package:flame/components.dart';
+
 class CollisionBox {
   const CollisionBox({
-    this.x,
-    this.y,
-    this.width,
-    this.height,
+    required this.position,
+    required this.size,
   });
-  final double x;
-  final double y;
-  final double width;
-  final double height;
 
+  final Vector2 position;
+  final Vector2 size;
 }

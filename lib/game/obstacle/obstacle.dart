@@ -1,3 +1,4 @@
+/*
 import 'dart:collection';
 import 'dart:ui';
 
@@ -186,3 +187,4 @@ class Obstacle extends SpriteComponent with Resizable {
     }
   }
 }
+*/

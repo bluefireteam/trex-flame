@@ -1,3 +1,4 @@
+/*
 import 'dart:ui';
 
 import 'package:flame/components/component.dart';
@@ -75,3 +76,4 @@ class GameOverRestart extends SpriteComponent with Resizable {
     x = (size.width / 2) - GameOverConfig.restartWidth / 2;
   }
 }
+*/

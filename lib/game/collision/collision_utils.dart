@@ -1,3 +1,4 @@
+/*
 import 'package:trex/game/collision/collision_box.dart';
 import 'package:trex/game/obstacle/obstacle.dart';
 import 'package:trex/game/t_rex/config.dart';
@@ -64,3 +65,4 @@ CollisionBox createAdjustedCollisionBox(
     height: box.height,
   );
 }
+*/
