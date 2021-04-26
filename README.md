@@ -7,4 +7,4 @@ The joy of our offline hours recreated with [Flutter](https://github.com/flutter
 
 # Article
 
-https://medium.com/dextra-digital/creating-the-t-rex-game-with-flutter-and-flame-6d01add1ad5b
+https://medium.com/@renancaraujo/creating-the-t-rex-game-with-flutter-and-flame-6d01add1ad5b
