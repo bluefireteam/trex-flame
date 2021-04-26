@@ -1,13 +1,30 @@
+import 'package:flame/components.dart';
+import 'package:flame/extensions.dart';
+import 'package:flutter/foundation.dart';
+
+@immutable
 class CollisionBox {
   const CollisionBox({
-    this.x,
-    this.y,
-    this.width,
-    this.height,
+    required this.position,
+    required this.size,
   });
-  final double x;
-  final double y;
-  final double width;
-  final double height;
 
+  factory CollisionBox.from(CollisionBox otherCollisionBox) {
+    return CollisionBox(
+      position: otherCollisionBox.position,
+      size: otherCollisionBox.size,
+    );
+  }
+
+  final Vector2 position;
+  final Vector2 size;
+
+  Rect toRect() {
+    return Rect.fromLTWH(position.x, position.y, size.x, size.y);
+  }
+
+  @override
+  String toString() {
+    return 'position: $position; size: $size';
+  }
 }

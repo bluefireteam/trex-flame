@@ -1,53 +1,73 @@
-import 'dart:ui';
+import 'dart:ui' as ui;
 
-import 'package:flame/components/component.dart';
-import 'package:flame/components/mixins/resizable.dart';
-import 'package:flame/components/mixins/tapable.dart';
+import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/gestures.dart';
+import 'package:flutter/gestures.dart';
+import 'package:trex/game/game_over/config.dart';
 import 'package:trex/game/horizon/horizon.dart';
-import 'package:trex/game/collision/collision_utils.dart';
 import 'package:trex/game/game_config.dart';
 import 'package:trex/game/game_over/game_over.dart';
-import 'package:trex/game/t_rex/config.dart';
+import 'package:trex/game/obstacle/obstacle.dart';
 import 'package:trex/game/t_rex/t_rex.dart';
 
-class Bg extends Component with Resizable {
-  Bg();
+import 'collision/collision_utils.dart';
 
-  final Paint _paint = Paint()..color = const Color(0xffffffff);
+class Bg extends Component with HasGameRef {
+  Vector2 size = Vector2.zero();
+
+  late final ui.Paint _paint = ui.Paint()..color = const ui.Color(0xffffffff);
 
   @override
-  void render(Canvas c) {
-    final rect = Rect.fromLTWH(0, 0, size.width, size.height);
+  void render(ui.Canvas c) {
+    final rect = ui.Rect.fromLTWH(0, 0, size.x, size.y);
     c.drawRect(rect, _paint);
   }
 
   @override
-  void update(double t) {}
+  void onGameResize(Vector2 gameSize) {
+    size = gameSize;
+  }
 }
 
 enum TRexGameStatus { playing, waiting, gameOver }
 
-class TRexGame extends BaseGame with MultiTouchTapDetector, HasTapableComponents {
-  TRexGame({Image spriteImage}) {
-    tRex = TRex(spriteImage);
-    horizon = Horizon(spriteImage);
-    gameOverPanel = GameOverPanel(spriteImage);
+class TRexGame extends BaseGame with TapDetector {
+  TRexGame({
+    required this.spriteImage,
+  }) : super();
 
-    this..add(Bg())..add(horizon)..add(tRex)..add(gameOverPanel);
-  }
-
-  TRex tRex;
-  Horizon horizon;
-  GameOverPanel gameOverPanel;
-  TRexGameStatus status = TRexGameStatus.waiting;
-
-  double currentSpeed = GameConfig.speed;
-  double timePlaying = 0.0;
+  late final config = GameConfig();
 
   @override
-  void onTapDown(_, __) {
+  ui.Color backgroundColor() => const ui.Color(0xFFFFFFFF);
+
+  final ui.Image spriteImage;
+
+  /// children
+  late final tRex = TRex();
+  late final horizon = Horizon();
+  late final gameOverPanel = GameOverPanel(spriteImage, GameOverConfig());
+
+  @override
+  Future<void> onLoad() async {
+    add(Bg());
+    add(horizon);
+    add(tRex);
+    add(gameOverPanel);
+  }
+
+  // state
+  late TRexGameStatus status = TRexGameStatus.waiting;
+  late double currentSpeed = 0.0;
+  late double timePlaying = 0.0;
+
+  bool get playing => status == TRexGameStatus.playing;
+
+  bool get gameOver => status == TRexGameStatus.gameOver;
+
+  @override
+  void onTapDown(TapDownDetails details) {
     onAction();
   }
 
@@ -59,60 +79,54 @@ class TRexGame extends BaseGame with MultiTouchTapDetector, HasTapableComponents
     tRex.startJump(currentSpeed);
   }
 
-  @override
-  void update(double t) {
-    tRex.update(t);
-    horizon.updateWithSpeed(0.0, currentSpeed);
-
-    if (gameOver) {
-      return;
-    }
-
-    if (tRex.playingIntro && tRex.x >= TRexConfig.startXPos) {
-      startGame();
-    } else if (tRex.playingIntro) {
-      horizon.updateWithSpeed(0.0, currentSpeed);
-    }
-
-    if (playing) {
-      timePlaying += t;
-      horizon.updateWithSpeed(t, currentSpeed);
-
-      final obstacles = horizon.horizonLine.obstacleManager.components;
-      final hasCollision =
-          obstacles.isNotEmpty && checkForCollision(obstacles.first, tRex);
-      if (!hasCollision) {
-        if (currentSpeed < GameConfig.maxSpeed) {
-          currentSpeed += GameConfig.acceleration;
-        }
-      } else {
-        doGameOver();
-      }
-    }
-  }
-
   void startGame() {
     tRex.status = TRexStatus.running;
     status = TRexGameStatus.playing;
     tRex.hasPlayedIntro = true;
+    currentSpeed = config.speed;
   }
-
-  bool get playing => status == TRexGameStatus.playing;
-
-  bool get gameOver => status == TRexGameStatus.gameOver;
 
   void doGameOver() {
     gameOverPanel.visible = true;
     status = TRexGameStatus.gameOver;
     tRex.status = TRexStatus.crashed;
+    currentSpeed = 0.0;
   }
 
   void restart() {
     status = TRexGameStatus.playing;
     tRex.reset();
     horizon.reset();
-    currentSpeed = GameConfig.speed;
+    currentSpeed = config.speed;
     gameOverPanel.visible = false;
     timePlaying = 0.0;
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+
+    if (gameOver) {
+      return;
+    }
+
+    if (tRex.playingIntro && tRex.x >= tRex.config.startXPos) {
+      startGame();
+    } else if (tRex.playingIntro) {}
+
+    if (playing) {
+      timePlaying += dt;
+
+      final obstacles = horizon.horizonLine.obstacleManager.children;
+      final hasCollision = obstacles.isNotEmpty &&
+          checkForCollision(obstacles.first as Obstacle, tRex);
+      if (!hasCollision) {
+        if (currentSpeed < config.maxSpeed) {
+          currentSpeed += config.acceleration;
+        }
+      } else {
+        doGameOver();
+      }
+    }
   }
 }

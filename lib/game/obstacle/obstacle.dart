@@ -1,75 +1,74 @@
 import 'dart:collection';
 import 'dart:ui';
 
-import 'package:flame/components/component.dart';
-import 'package:flame/components/mixins/has_game_ref.dart';
-import 'package:flame/components/mixins/resizable.dart';
-import 'package:flame/components/composed_component.dart';
-import 'package:flame/components/mixins/tapable.dart';
-import 'package:flame/sprite.dart';
-
+import 'package:flame/components.dart';
 import 'package:trex/game/collision/collision_box.dart';
 import 'package:trex/game/custom/util.dart';
-import 'package:trex/game/game_config.dart';
 import 'package:trex/game/horizon/config.dart';
-import 'package:trex/game/obstacle/config.dart';
-import 'package:trex/game/obstacle/obstacle_type.dart';
 
-class ObstacleManager extends PositionComponent
-    with HasGameRef, Tapable, ComposedComponent, Resizable {
+import '../game.dart';
+import 'config.dart';
+import 'obstacle_type.dart';
 
-  ObstacleManager(this.spriteImage) : super();
+class ObstacleManager extends PositionComponent with HasGameRef<TRexGame> {
+  ObstacleManager(this.dimensions);
 
   ListQueue<ObstacleType> history = ListQueue();
+  final HorizonDimensions dimensions;
 
-  Image spriteImage;
-
-  void updateWithSpeed(double t, double speed) {
-    for(final c in components){
+  @override
+  void update(double dt) {
+    for (final c in children) {
       final cloud = c as Obstacle;
-      cloud.updateWithSpeed(t, speed);
+      cloud.y = y + cloud.type.y - 75;
     }
 
-    if (components.isNotEmpty) {
-      final lastObstacle = components.last as Obstacle;
+    final speed = gameRef.currentSpeed;
+
+    if (children.isNotEmpty) {
+      final lastObstacle = children.last as Obstacle?;
 
       if (lastObstacle != null &&
           !lastObstacle.followingObstacleCreated &&
           lastObstacle.isVisible &&
           (lastObstacle.x + lastObstacle.width + lastObstacle.gap) <
-              HorizonDimensions.width) {
+              dimensions.width) {
         addNewObstacle(speed);
         lastObstacle.followingObstacleCreated = true;
       }
     } else {
       addNewObstacle(speed);
     }
+
+    super.update(dt);
   }
 
   void addNewObstacle(double speed) {
+    if (speed == 0) {
+      return;
+    }
     final type = getRandomNum(0.0, 1.0).round() == 0
         ? ObstacleType.cactusSmall
         : ObstacleType.cactusLarge;
     if (duplicateObstacleCheck(type) || speed < type.multipleSpeed) {
       return;
     } else {
-      final obstacleSprite = ObstacleType.spriteForType(type, spriteImage);
       final obstacle = Obstacle(
-        type,
-        obstacleSprite,
-        speed,
-        GameConfig.gapCoefficient,
-        type.width,
+        type: type,
+        spriteImage: gameRef.spriteImage,
+        speed: speed,
+        gapCoefficient: gameRef.config.gapCoefficient,
+        dimensions: dimensions,
       );
 
-      obstacle.x = size.width;
+      obstacle.x = gameRef.size.x;
 
-      components.add(obstacle);
+      addChild(obstacle);
 
       history.addFirst(type);
       if (history.length > 1) {
         final sublist =
-            history.toList().sublist(0, GameConfig.maxObstacleDuplication);
+            history.toList().sublist(0, gameRef.config.maxObstacleDuplication);
         history = ListQueue.from(sublist);
       }
     }
@@ -77,112 +76,85 @@ class ObstacleManager extends PositionComponent
 
   bool duplicateObstacleCheck(ObstacleType nextType) {
     int duplicateCount = 0;
+
     for (final c in history) {
-      duplicateCount += c == nextType ? 1 : 0;
+      duplicateCount += c.type == nextType.type ? 1 : 0;
     }
-    return duplicateCount >= GameConfig.maxObstacleDuplication;
+    return duplicateCount >= gameRef.config.maxObstacleDuplication;
   }
 
   void reset() {
-    components.clear();
+    clearChildren();
     history.clear();
-  }
-
-  @override
-  void update(double t) {
-    for (final c in components) {
-      final cloud = c as Obstacle;
-      cloud.y = y + cloud.type.y - 75;
-    }
-    super.update(t);
   }
 }
 
-class Obstacle extends SpriteComponent with Resizable {
-
-  Obstacle(
-      this.type,
-      Sprite sprite,
-      double speed,
-      double gapCoefficient, [
-        double xOffset,
-      ]) : super.fromSprite(
-    type.width,
-    type.height,
-    sprite,
-  ) {
-    cloneCollisionBoxes();
-
-    internalSize =
-        getRandomNum(1.0, ObstacleConfig.maxObstacleLength / 1).floor();
-    x = HorizonDimensions.width + (xOffset ?? 0.0);
+class Obstacle extends SpriteComponent with HasGameRef<TRexGame> {
+  Obstacle({
+    required this.type,
+    required Image spriteImage,
+    required double speed,
+    required double gapCoefficient,
+    required HorizonDimensions dimensions,
+    double xOffset = 0.0,
+  }) : super(
+          sprite: type.getSprite(spriteImage),
+        ) {
+    x = dimensions.width + xOffset;
 
     if (internalSize > 1 && type.multipleSpeed > speed) {
       internalSize = 1;
     }
 
     width = type.width * internalSize;
-    final actualSrc = this.sprite.src;
-    this.sprite.src = Rect.fromLTWH(
+    height = type.height;
+    gap = computeGap(gapCoefficient, speed);
+    final actualSrc = sprite!.src;
+    sprite!.src = Rect.fromLTWH(
       actualSrc.left,
       actualSrc.top,
       width,
       actualSrc.height,
     );
-
-    gap = getGap(gapCoefficient, speed);
   }
 
-  List<CollisionBox> collisionBoxes = [];
+  final ObstacleConfig config = ObstacleConfig();
+
+  bool followingObstacleCreated = false;
+  late double gap;
+
+  late int internalSize = getRandomNum(
+    1.0,
+    config.maxObstacleLength / 1,
+  ).floor();
+
   ObstacleType type;
 
-  bool toRemove = false;
-  bool followingObstacleCreated = false;
-  double gap = 0.0;
-  int internalSize;
+  late List<CollisionBox> collisionBoxes = [
+    for (final box in type.collisionBoxes) CollisionBox.from(box)
+  ];
 
-  @override
-  void update(double t) {}
+  bool get isVisible => (x + width) > 0;
 
-  void updateWithSpeed(double t, double speed) {
-    if (toRemove) {
-      return;
-    }
-
-    final increment = speed * 50 * t;
-    x -= increment;
-
-    if (!isVisible) {
-      toRemove = true;
-    }
-  }
-
-  double getGap(double gapCoefficient, double speed) {
+  double computeGap(double gapCoefficient, double speed) {
     final minGap = (width * speed * type.minGap * gapCoefficient).round() / 1;
-    final maxGap = (minGap * ObstacleConfig.maxGapCoefficient).round() / 1;
+    final maxGap = (minGap * config.maxGapCoefficient).round() / 1;
+
     return getRandomNum(minGap, maxGap);
   }
 
   @override
-  bool destroy() {
-    return toRemove;
-  }
-
-  bool get isVisible => x + width > 0;
-
-  void cloneCollisionBoxes() {
-    final typeCollisionBoxes = type.collisionBoxes;
-
-    for (final box in typeCollisionBoxes) {
-      collisionBoxes
-        ..add(
-          CollisionBox(
-            x: box.x,
-            y: box.y,
-            width: box.width,
-            height: box.height,
-          ),
-        );
+  void update(double dt) {
+    if (shouldRemove) {
+      return;
     }
+
+    final increment = gameRef.currentSpeed * 50 * dt;
+    x -= increment;
+
+    if (!isVisible) {
+      remove();
+    }
+    super.update(dt);
   }
 }

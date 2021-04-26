@@ -1,21 +1,22 @@
 import 'dart:ui';
 
+import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:trex/game/collision/collision_box.dart';
 
 class ObstacleType {
   const ObstacleType._internal(
     this.type, {
-    this.width,
-    this.height,
-    this.y,
-    this.multipleSpeed,
-    this.minGap,
-    this.minSpeed,
+    required this.width,
+    required this.height,
+    required this.y,
+    required this.multipleSpeed,
+    required this.minGap,
+    required this.minSpeed,
     this.numFrames,
     this.frameRate,
     this.speedOffset,
-    this.collisionBoxes,
+    required this.collisionBoxes,
   });
 
   final String type;
@@ -25,13 +26,13 @@ class ObstacleType {
   final int multipleSpeed;
   final double minGap;
   final double minSpeed;
-  final int numFrames;
-  final double frameRate;
-  final double speedOffset;
+  final int? numFrames;
+  final double? frameRate;
+  final double? speedOffset;
 
   final List<CollisionBox> collisionBoxes;
 
-  static const cactusSmall = ObstacleType._internal(
+  static final cactusSmall = ObstacleType._internal(
     "cactusSmall",
     width: 34.0,
     height: 70.0,
@@ -41,27 +42,21 @@ class ObstacleType {
     minSpeed: 0.0,
     collisionBoxes: <CollisionBox>[
       CollisionBox(
-        x: 5.0,
-        y: 7.0,
-        width: 10.0,
-        height: 54.0,
+        position: Vector2(5.0, 7.0),
+        size: Vector2(10.0, 54.0),
       ),
       CollisionBox(
-        x: 9.0,
-        y: 0.0,
-        width: 12.0,
-        height: 68.0,
+        position: Vector2(5.0, 7.0),
+        size: Vector2(12.0, 68.0),
       ),
       CollisionBox(
-        x: 15.0,
-        y: 4.0,
-        width: 14.0,
-        height: 28.0,
+        position: Vector2(15.0, 4.0),
+        size: Vector2(14.0, 28.0),
       ),
     ],
   );
 
-  static const cactusLarge = ObstacleType._internal(
+  static final cactusLarge = ObstacleType._internal(
     "cactusLarge",
     width: 50.0,
     height: 100.0,
@@ -70,28 +65,38 @@ class ObstacleType {
     minGap: 120.0,
     minSpeed: 0.0,
     collisionBoxes: <CollisionBox>[
-      CollisionBox(x: 0.0, y: 12.0, width: 14.0, height: 76.0),
-      CollisionBox(x: 8.0, y: 0.0, width: 14.0, height: 98.0),
-      CollisionBox(x: 13.0, y: 10.0, width: 20.0, height: 76.0)
+      CollisionBox(
+        position: Vector2(0.0, 12.0),
+        size: Vector2(14.0, 76.0),
+      ),
+      CollisionBox(
+        position: Vector2(8.0, 0.0),
+        size: Vector2(14.0, 98.0),
+      ),
+      CollisionBox(
+        position: Vector2(13.0, 10.0),
+        size: Vector2(20.0, 76.0),
+      )
     ],
   );
 
-  static Sprite spriteForType(ObstacleType type, Image spriteImage) {
-    if (type == cactusSmall) {
-      return Sprite.fromImage(
+  Sprite getSprite(Image spriteImage) {
+    if (this == cactusSmall) {
+      return Sprite(
         spriteImage,
-        x: 446.0,
-        y: 2.0,
-        width: type.width,
-        height: type.height,
+        srcPosition: Vector2(446.0, 2.0),
+        srcSize: Vector2(width, height),
       );
     }
-    return Sprite.fromImage(
+    return Sprite(
       spriteImage,
-      x: 652.0,
-      y: 2.0,
-      width: type.width,
-      height: type.height,
+      srcPosition: Vector2(652.0, 2.0),
+      srcSize: Vector2(width, height),
     );
+  }
+
+  @override
+  String toString() {
+    return type;
   }
 }

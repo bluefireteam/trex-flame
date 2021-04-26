@@ -1,23 +1,23 @@
 class HorizonConfig {
-  static double cloudFrequency = 0.5;
-  static int maxClouds = 20;
-  static double bgCloudSpeed = 0.2;
+  late final double cloudFrequency = 0.5;
+  late final int maxClouds = 20;
+  late final double bgCloudSpeed = 0.2;
 }
 
 class HorizonDimensions {
-  static double width = 1200.0;
-  static double height = 24.0;
-  static double yPos = 127.0;
+  late final double width = 1200.0;
+  late final double height = 24.0;
+  late final double yPos = 127.0;
 }
 
 class CloudConfig {
-  static double height = 28.0;
+  late final double height = 28.0;
 
-  static double maxCloudGap = 400.0;
-  static double minCloudGap = 100.0;
+  late final double maxCloudGap = 400.0;
+  late final double minCloudGap = 100.0;
 
-  static double maxSkyLevel = 71.0;
-  static double minSkyLevel = 30.0;
+  late final double maxSkyLevel = 71.0;
+  late final double minSkyLevel = 30.0;
 
-  static double width = 92.0;
+  late final double width = 92.0;
 }
