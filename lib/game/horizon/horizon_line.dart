@@ -1,4 +1,5 @@
 import 'package:flame/components.dart';
+import 'package:trex/game/obstacle/obstacle.dart';
 
 import '../game.dart';
 import 'clouds.dart';
@@ -8,13 +9,13 @@ class HorizonLine extends PositionComponent with HasGameRef<TRexGame> {
   late final dimensions = HorizonDimensions();
 
   late final _softSprite = Sprite(
-    gameRef!.spriteImage,
+    gameRef.spriteImage,
     srcPosition: Vector2(2.0, 104.0),
     srcSize: Vector2(dimensions.width, dimensions.height),
   );
 
   late final _bumpySprite = Sprite(
-    gameRef!.spriteImage,
+    gameRef.spriteImage,
     srcPosition: Vector2(2.0 + dimensions.width, 104.0),
     srcSize: Vector2(dimensions.width, dimensions.height),
   );
@@ -25,13 +26,18 @@ class HorizonLine extends PositionComponent with HasGameRef<TRexGame> {
   late final thirdGround = HorizonGround(_softSprite, dimensions);
 
   // children
-  late final CloudManager cloudManager;
-  late final ObstacleManager obstacleManager;
+  late final CloudManager cloudManager =
+      CloudManager(horizonConfig: HorizonConfig());
+  late final ObstacleManager obstacleManager = ObstacleManager(dimensions);
 
   @override
-  Future<void>? onLoad() {
+  void onMount() {
+    addChild(firstGround);
+    addChild(secondGround);
+    addChild(thirdGround);
     addChild(cloudManager);
     addChild(obstacleManager);
+    super.onMount();
   }
 
   void updateXPos(int indexFirst, double increment) {
@@ -53,7 +59,7 @@ class HorizonLine extends PositionComponent with HasGameRef<TRexGame> {
   @override
   void update(double dt) {
     super.update(dt);
-    final increment = gameRef!.currentSpeed * 50 * dt;
+    final increment = gameRef.currentSpeed * 50 * dt;
     final index = firstGround.x <= 0
         ? 0
         : secondGround.x <= 0
@@ -64,10 +70,10 @@ class HorizonLine extends PositionComponent with HasGameRef<TRexGame> {
 
   void reset() {
     cloudManager.reset();
-    //obstacleManager.reset();
+    obstacleManager.reset();
 
     firstGround.x = 0.0;
-    secondGround.y = dimensions.width;
+    secondGround.x = dimensions.width;
   }
 }
 

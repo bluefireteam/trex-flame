@@ -9,12 +9,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flame: 1.0.0-rc8
+  flame: 1.0.0-rc9
 
 
 dev_dependencies:
   flutter_launcher_icons: ^0.7.3
-  # flame_splash_screen: 0.0.1
   flutter_test:
     sdk: flutter
 

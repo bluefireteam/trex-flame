@@ -1,4 +1,4 @@
 class ObstacleConfig {
-  static int maxObstacleLength = 3;
-  static double maxGapCoefficient = 1.5;
+  late final int maxObstacleLength = 3;
+  late final double maxGapCoefficient = 1.5;
 }

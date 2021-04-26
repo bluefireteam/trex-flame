@@ -9,7 +9,7 @@ class Cloud extends SpriteComponent {
   Cloud({
     required this.config,
     required Image spriteImage,
-  })   : cloudGap = getRandomNum(
+  })  : cloudGap = getRandomNum(
           config.minCloudGap,
           config.maxCloudGap,
         ),
@@ -61,9 +61,9 @@ class CloudManager extends PositionComponent with HasGameRef<TRexGame> {
   void addCloud() {
     final cloud = Cloud(
       config: cloudConfig,
-      spriteImage: gameRef!.spriteImage,
+      spriteImage: gameRef.spriteImage,
     );
-    cloud.x = gameRef!.size.x + cloudConfig.width + 10;
+    cloud.x = gameRef.size.x + cloudConfig.width + 10;
     cloud.y = ((absolutePosition.y / 2 -
                 (cloudConfig.maxSkyLevel - cloudConfig.minSkyLevel)) +
             getRandomNum(cloudConfig.minSkyLevel, cloudConfig.maxSkyLevel)) -
@@ -72,7 +72,7 @@ class CloudManager extends PositionComponent with HasGameRef<TRexGame> {
   }
 
   double get cloudSpeed =>
-      horizonConfig.bgCloudSpeed / 1000 * gameRef!.currentSpeed;
+      horizonConfig.bgCloudSpeed / 1000 * gameRef.currentSpeed;
 
   @override
   void update(double dt) {
@@ -81,7 +81,7 @@ class CloudManager extends PositionComponent with HasGameRef<TRexGame> {
     if (numClouds > 0) {
       final lastCloud = children.last as Cloud;
       if (numClouds < horizonConfig.maxClouds &&
-          (gameRef!.size.x / 2 - lastCloud.x) > lastCloud.cloudGap) {
+          (gameRef.size.x / 2 - lastCloud.x) > lastCloud.cloudGap) {
         addCloud();
       }
     } else {

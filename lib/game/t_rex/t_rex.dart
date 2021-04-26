@@ -20,11 +20,13 @@ class TRex extends PositionComponent with HasGameRef<TRexGame> {
   bool hasPlayedIntro = false;
 
   // ref to children
-  late final WaitingTRex idleDino = WaitingTRex(gameRef!.spriteImage, config);
-  late final RunningTRex runningDino = RunningTRex(gameRef!.spriteImage, config);
-  late final JumpingTRex jumpingTRex = JumpingTRex(gameRef!.spriteImage, config);
+  late final WaitingTRex idleDino = WaitingTRex(gameRef.spriteImage, config);
+  late final RunningTRex runningDino =
+      RunningTRex(gameRef.spriteImage, config);
+  late final JumpingTRex jumpingTRex =
+      JumpingTRex(gameRef.spriteImage, config);
   late final SurprisedTRex surprisedTRex = SurprisedTRex(
-    gameRef!.spriteImage,
+    gameRef.spriteImage,
     config,
   );
 
@@ -33,7 +35,7 @@ class TRex extends PositionComponent with HasGameRef<TRexGame> {
   bool get ducking => status == TRexStatus.ducking;
 
   double get groundYPos {
-    return (gameRef!.size.y / 2) - config.height / 2;
+    return (gameRef.size.y / 2) - config.height / 2;
   }
 
   @override
@@ -63,7 +65,7 @@ class TRex extends PositionComponent with HasGameRef<TRexGame> {
   }
 
   @override
-  void update(double t) {
+  void update(double dt) {
     if (status == TRexStatus.jumping) {
       y += jumpVelocity;
       jumpVelocity += config.gravity;
@@ -80,9 +82,9 @@ class TRex extends PositionComponent with HasGameRef<TRexGame> {
       status = TRexStatus.intro;
     }
     if (playingIntro && x < config.startXPos) {
-      x += (config.startXPos / config.introDuration) * t * 5000;
+      x += (config.startXPos / config.introDuration) * dt * 5000;
     }
-    super.update(t);
+    super.update(dt);
   }
 
   @override
@@ -93,14 +95,15 @@ class TRex extends PositionComponent with HasGameRef<TRexGame> {
 }
 
 mixin TRexStateVisibility on BaseComponent {
-  late final TRexStatus showFor;
+  late final List<TRexStatus> showFor;
 
   @override
   TRex get parent => super.parent as TRex;
 
   @override
   void render(Canvas canvas) {
-    if (parent.status != showFor) {
+    final show = showFor.any((element) => element == parent.status);
+    if (!show) {
       return;
     }
     super.render(canvas);
@@ -110,7 +113,7 @@ mixin TRexStateVisibility on BaseComponent {
 /// A component superclass for TRex states with still sprites
 class TRexStateStillComponent extends SpriteComponent with TRexStateVisibility {
   TRexStateStillComponent({
-    required TRexStatus showFor,
+    required List<TRexStatus> showFor,
     required Image spriteImage,
     required TRexConfig config,
     required Vector2 srcPosition,
@@ -129,7 +132,7 @@ class TRexStateStillComponent extends SpriteComponent with TRexStateVisibility {
 class TRexStateAnimatedComponent extends SpriteAnimationComponent
     with TRexStateVisibility {
   TRexStateAnimatedComponent({
-    required TRexStatus showFor,
+    required List<TRexStatus> showFor,
     required Image spriteImage,
     required TRexConfig config,
     required Vector2 size,
@@ -157,18 +160,18 @@ class RunningTRex extends TRexStateAnimatedComponent {
     Image spriteImage,
     TRexConfig config,
   ) : super(
-          showFor: TRexStatus.running,
+          showFor: [TRexStatus.running, TRexStatus.intro],
           spriteImage: spriteImage,
           size: Vector2(88.0, 90.0),
           config: config,
-          frames: [Vector2(4.0, 1514.0), Vector2(4.0, 1602.0)],
+          frames: [Vector2(1514.0, 4.0), Vector2(1602.0, 4.0)],
         );
 }
 
 class WaitingTRex extends TRexStateStillComponent {
   WaitingTRex(Image spriteImage, TRexConfig config)
       : super(
-          showFor: TRexStatus.waiting,
+          showFor: [TRexStatus.waiting],
           config: config,
           spriteImage: spriteImage,
           srcPosition: Vector2(76.0, 6.0),
@@ -178,7 +181,7 @@ class WaitingTRex extends TRexStateStillComponent {
 class JumpingTRex extends TRexStateStillComponent {
   JumpingTRex(Image spriteImage, TRexConfig config)
       : super(
-          showFor: TRexStatus.jumping,
+          showFor: [TRexStatus.jumping],
           config: config,
           spriteImage: spriteImage,
           srcPosition: Vector2(1339.0, 6.0),
@@ -188,7 +191,7 @@ class JumpingTRex extends TRexStateStillComponent {
 class SurprisedTRex extends TRexStateStillComponent {
   SurprisedTRex(Image spriteImage, TRexConfig config)
       : super(
-          showFor: TRexStatus.crashed,
+          showFor: [TRexStatus.crashed],
           config: config,
           spriteImage: spriteImage,
           srcPosition: Vector2(1782.0, 6.0),

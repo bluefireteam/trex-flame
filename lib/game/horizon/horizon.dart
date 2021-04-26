@@ -12,9 +12,9 @@ class Horizon extends PositionComponent with HasGameRef<TRexGame> {
   }
 
   @override
-  void update(double t) {
-    y = (size.y / 2) + 21.0;
-    super.update(t);
+  void update(double dt) {
+    y = (gameRef.size.y / 2) + 21.0;
+    super.update(dt);
   }
 
   void reset() {

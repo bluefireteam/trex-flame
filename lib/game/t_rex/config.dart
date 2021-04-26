@@ -18,38 +18,36 @@ class TRexConfig {
   final double widthDuck = 118.0;
 }
 
-class TRexCollisionBoxes {
-  final List<CollisionBox> ducking = <CollisionBox>[
-    CollisionBox(
-      position: Vector2(1.0, 18.0),
-      size: Vector2(110.0, 50.0),
-    ),
-  ];
+final tRexCollisionBoxesDucking = <CollisionBox>[
+  CollisionBox(
+    position: Vector2(1.0, 18.0),
+    size: Vector2(110.0, 50.0),
+  ),
+];
 
-  final List<CollisionBox> running = <CollisionBox>[
-    CollisionBox(
-      position: Vector2(22.0, 0.0),
-      size: Vector2(34.0, 32.0),
-    ),
-    CollisionBox(
-      position: Vector2(1.0, 18.0),
-      size: Vector2(60.0, 18.0),
-    ),
-    CollisionBox(
-      position: Vector2(10.0, 35.0),
-      size: Vector2(28.0, 16.0),
-    ),
-    CollisionBox(
-      position: Vector2(1.0, 24.0),
-      size: Vector2(58.0, 10.0),
-    ),
-    CollisionBox(
-      position: Vector2(5.0, 30.0),
-      size: Vector2(42.0, 8.0),
-    ),
-    CollisionBox(
-      position: Vector2(9.0, 34.0),
-      size: Vector2(30.0, 8.0),
-    )
-  ];
-}
+final tRexCollisionBoxesRunning = <CollisionBox>[
+  CollisionBox(
+    position: Vector2(22.0, 0.0),
+    size: Vector2(34.0, 32.0),
+  ),
+  CollisionBox(
+    position: Vector2(1.0, 18.0),
+    size: Vector2(60.0, 18.0),
+  ),
+  CollisionBox(
+    position: Vector2(10.0, 35.0),
+    size: Vector2(28.0, 16.0),
+  ),
+  CollisionBox(
+    position: Vector2(1.0, 24.0),
+    size: Vector2(58.0, 10.0),
+  ),
+  CollisionBox(
+    position: Vector2(5.0, 30.0),
+    size: Vector2(42.0, 8.0),
+  ),
+  CollisionBox(
+    position: Vector2(9.0, 34.0),
+    size: Vector2(30.0, 8.0),
+  )
+];

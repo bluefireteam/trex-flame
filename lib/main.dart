@@ -6,13 +6,13 @@ import 'package:flutter/services.dart';
 import 'package:trex/game/game.dart';
 
 void main() {
-  Flame.device.fullScreen();
+  //Flame.device.fullScreen();
   runApp(
     MaterialApp(
       title: 'TRexGame',
-      color: Colors.white,
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        backgroundColor: Colors.white,
         body: TRexGameWrapper(),
       ),
     ),
@@ -49,10 +49,11 @@ class _TRexGameWrapperState extends State<TRexGameWrapper> {
   void onRawKeyEvent(RawKeyEvent event) {
     if (event.logicalKey == LogicalKeyboardKey.enter ||
         event.logicalKey == LogicalKeyboardKey.space) {
-      //game!.onAction();
+      game!.onAction();
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     if (game == null) {
       return const Center(
