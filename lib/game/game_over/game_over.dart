@@ -5,7 +5,7 @@ import 'package:trex/game/game.dart';
 
 import 'config.dart';
 
-class GameOverPanel extends BaseComponent with HasGameRef<TRexGame> {
+class GameOverPanel extends Component with HasGameRef<TRexGame> {
   GameOverPanel(
     Image spriteImage,
     GameOverConfig config,
@@ -20,8 +20,8 @@ class GameOverPanel extends BaseComponent with HasGameRef<TRexGame> {
 
   @override
   Future<void>? onLoad() {
-    addChild(gameOverText);
-    addChild(gameOverRestart);
+    add(gameOverText);
+    add(gameOverRestart);
     return super.onLoad();
   }
 

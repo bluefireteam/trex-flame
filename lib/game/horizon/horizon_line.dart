@@ -32,11 +32,11 @@ class HorizonLine extends PositionComponent with HasGameRef<TRexGame> {
 
   @override
   void onMount() {
-    addChild(firstGround);
-    addChild(secondGround);
-    addChild(thirdGround);
-    addChild(cloudManager);
-    addChild(obstacleManager);
+    add(firstGround);
+    add(secondGround);
+    add(thirdGround);
+    add(cloudManager);
+    add(obstacleManager);
     super.onMount();
   }
 

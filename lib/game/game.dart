@@ -2,12 +2,11 @@ import 'dart:ui' as ui;
 
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
-import 'package:flame/gestures.dart';
-import 'package:flutter/gestures.dart';
-import 'package:trex/game/game_over/config.dart';
-import 'package:trex/game/horizon/horizon.dart';
+import 'package:flame/input.dart';
 import 'package:trex/game/game_config.dart';
+import 'package:trex/game/game_over/config.dart';
 import 'package:trex/game/game_over/game_over.dart';
+import 'package:trex/game/horizon/horizon.dart';
 import 'package:trex/game/obstacle/obstacle.dart';
 import 'package:trex/game/t_rex/t_rex.dart';
 
@@ -32,7 +31,7 @@ class Bg extends Component with HasGameRef {
 
 enum TRexGameStatus { playing, waiting, gameOver }
 
-class TRexGame extends BaseGame with TapDetector {
+class TRexGame extends FlameGame with TapDetector {
   TRexGame({
     required this.spriteImage,
   }) : super();
@@ -67,7 +66,7 @@ class TRexGame extends BaseGame with TapDetector {
   bool get gameOver => status == TRexGameStatus.gameOver;
 
   @override
-  void onTapDown(TapDownDetails details) {
+  void onTapDown(TapDownInfo event) {
     onAction();
   }
 

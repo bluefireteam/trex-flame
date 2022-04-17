@@ -33,7 +33,7 @@ class Cloud extends SpriteComponent {
     x -= (parent as CloudManager).cloudSpeed.ceil() * 50 * dt;
 
     if (!isVisible) {
-      remove();
+      removeFromParent();
     }
   }
 
@@ -45,8 +45,8 @@ class Cloud extends SpriteComponent {
   void onGameResize(Vector2 gameSize) {
     super.onGameResize(gameSize);
     y = ((absolutePosition.y / 2 - (config.maxSkyLevel - config.minSkyLevel)) +
-            getRandomNum(config.minSkyLevel, config.maxSkyLevel)) -
-        absoluteParentPosition.y;
+        getRandomNum(config.minSkyLevel, config.maxSkyLevel)) -
+        absolutePositionOf(absoluteTopLeftPosition).y;
   }
 }
 
@@ -68,7 +68,7 @@ class CloudManager extends PositionComponent with HasGameRef<TRexGame> {
                 (cloudConfig.maxSkyLevel - cloudConfig.minSkyLevel)) +
             getRandomNum(cloudConfig.minSkyLevel, cloudConfig.maxSkyLevel)) -
         absolutePosition.y;
-    addChild(cloud);
+    add(cloud);
   }
 
   double get cloudSpeed =>
@@ -90,6 +90,6 @@ class CloudManager extends PositionComponent with HasGameRef<TRexGame> {
   }
 
   void reset() {
-    clearChildren();
+    children.clear();
   }
 }
