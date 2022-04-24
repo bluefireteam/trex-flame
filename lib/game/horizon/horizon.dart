@@ -8,7 +8,7 @@ class Horizon extends PositionComponent with HasGameRef<TRexGame> {
 
   @override
   Future<void>? onLoad() {
-    addChild(horizonLine);
+    add(horizonLine);
   }
 
   @override

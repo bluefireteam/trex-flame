@@ -63,7 +63,7 @@ class ObstacleManager extends PositionComponent with HasGameRef<TRexGame> {
 
       obstacle.x = gameRef.size.x;
 
-      addChild(obstacle);
+      add(obstacle);
 
       history.addFirst(type);
       if (history.length > 1) {
@@ -84,7 +84,7 @@ class ObstacleManager extends PositionComponent with HasGameRef<TRexGame> {
   }
 
   void reset() {
-    clearChildren();
+    children.clear();
     history.clear();
   }
 }
@@ -153,7 +153,7 @@ class Obstacle extends SpriteComponent with HasGameRef<TRexGame> {
     x -= increment;
 
     if (!isVisible) {
-      remove();
+      removeFromParent();
     }
     super.update(dt);
   }

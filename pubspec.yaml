@@ -9,8 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flame: 1.0.0-rc9
-
+  flame: ^1.1.1
 
 dev_dependencies:
   flutter_launcher_icons: ^0.7.3

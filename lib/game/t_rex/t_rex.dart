@@ -40,10 +40,10 @@ class TRex extends PositionComponent with HasGameRef<TRexGame> {
 
   @override
   Future? onLoad() {
-    addChild(idleDino);
-    addChild(runningDino);
-    addChild(jumpingTRex);
-    addChild(surprisedTRex);
+    add(idleDino);
+    add(runningDino);
+    add(jumpingTRex);
+    add(surprisedTRex);
   }
 
   void startJump(double speed) {
@@ -94,7 +94,7 @@ class TRex extends PositionComponent with HasGameRef<TRexGame> {
   }
 }
 
-mixin TRexStateVisibility on BaseComponent {
+mixin TRexStateVisibility on Component {
   late final List<TRexStatus> showFor;
 
   @override
