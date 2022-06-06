@@ -1,6 +1,7 @@
 ## ⚠️ This repository is no longer the home of the flame trex
 
-This has been moved as an example in the Flame repository: https://github.com/flame-engine/flame/tree/main/examples/lib/stories/games/trex
+
+This has been moved as an example in the [flame examples repository](https://github.com/flame-engine/flame/tree/main/examples/games/trex).
 
 
 # Trex game Flutter edition
